@@ -65,16 +65,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: TextFormField(
                     minLines: 4,
-                    maxLines: 40,
+                    maxLines: 10,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
-                      hintText: 'Что надо сделать…',
+                      hintText: appLocalizations.taskFormFieldPlaceholder,
                       hintStyle: Theme.of(context).textTheme.bodyText2,
                       border: InputBorder.none,
-                      // hintStyle: TextStyle(color: Colors.grey),
-                      // border: OutlineInputBorder(
-                      //   borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      // ),
                     ),
                   ),
                 ),
@@ -121,6 +117,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               child: Row(
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         appLocalizations.makeUpTo,
@@ -133,9 +130,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         maintainState: true,
                         visible: isToggled,
                         child: InkWell(
-                          onTap: () => _selectDate,
+                          onTap: () => _selectDate(context),
                           child: Text(
-                            DateFormat('d MMMM y')
+                            DateFormat('d MMMM y', 'ru_RU')
                                 .format(selectedDate)
                                 .toString(),
                             style: Theme.of(context).textTheme.subtitle2,
@@ -191,7 +188,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2019, 1),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2100),
     );
     if (pickedDate != null && pickedDate != selectedDate) {

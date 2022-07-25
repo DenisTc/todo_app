@@ -22,7 +22,10 @@ class _TaskListScreenState extends State<TaskListScreen> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AddTaskScreen()),
+        ),
         child: const Icon(Icons.add),
       ),
       body: SafeArea(
@@ -67,7 +70,8 @@ class _TaskListScreenState extends State<TaskListScreen> {
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const AddTaskScreen()),
+                          builder: (context) => const AddTaskScreen(),
+                        ),
                       ),
                       child: Dismissible(
                         key: Key(index.toString()),
