@@ -28,7 +28,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () => context.read<NavigationController>().pop(),
           child: SvgPicture.asset(
             AppIcons.close,
             height: 15,

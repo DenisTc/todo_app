@@ -9,17 +9,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: AppTheme.lightTheme,
-      supportedLocales: L10n.all,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
+    final navigationController = NavigationController();
+    final routeObserver = RouteObserver();
+
+    return MultiProvider(
+      providers: [
+        Provider<NavigationController>.value(
+          value: navigationController,
+          child: Provider<RouteObserver>.value(
+            value: routeObserver,
+          ),
+        ),
       ],
-      home: const TaskListScreen(),
+      child: MaterialApp(
+        title: 'My Tasks',
+        navigatorKey: navigationController.key,
+        onGenerateRoute: Routes.generateRoute,
+        initialRoute: RouteConstant.main,
+        theme: AppTheme.lightTheme,
+        supportedLocales: L10n.all,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        home: const TaskListScreen(),
+      ),
     );
   }
 }

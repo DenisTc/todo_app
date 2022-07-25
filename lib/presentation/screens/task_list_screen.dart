@@ -22,10 +22,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const AddTaskScreen()),
-        ),
+        onPressed: () => context
+            .read<NavigationController>()
+            .navigateTo(RouteConstant.addTask),
         child: const Icon(Icons.add),
       ),
       body: SafeArea(
@@ -67,12 +66,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
                     return GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddTaskScreen(),
-                        ),
-                      ),
+                      onTap: () => context
+                          .read<NavigationController>()
+                          .navigateTo(RouteConstant.addTask),
                       child: Dismissible(
                         key: Key(index.toString()),
                         onDismissed: (DismissDirection direction) {},
