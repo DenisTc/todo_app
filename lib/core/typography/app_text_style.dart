@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'app_font_family.dart';
+import 'package:todo_app/core/typography/typography.dart';
 
 class AppTextStyle {
   static const largeTitle = TextStyle(

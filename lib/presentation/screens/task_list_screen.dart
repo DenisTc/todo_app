@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:todo_app/core/constants/app_colors.dart';
-import 'package:todo_app/core/constants/app_icons.dart';
+import 'package:todo_app/imports.dart';
 
 class TaskListScreen extends StatefulWidget {
   const TaskListScreen({Key? key}) : super(key: key);
@@ -20,6 +17,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+    final appLocalizations = AppLocalizations.of(context)!;
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -64,25 +64,30 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
                     return GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AddTaskScreen()),
+                      ),
                       child: Dismissible(
                         key: Key(index.toString()),
                         onDismissed: (DismissDirection direction) {},
                         background: Container(
                           padding: const EdgeInsets.only(left: 24),
                           alignment: Alignment.centerLeft,
-                          color: AppColors.greenLight,
+                          color: customColors.green,
                           child: SvgPicture.asset(
                             AppIcons.check,
-                            color: AppColors.whiteLight,
+                            color: customColors.white,
                           ),
                         ),
                         secondaryBackground: Container(
                           padding: const EdgeInsets.only(right: 24),
                           alignment: Alignment.centerRight,
-                          color: Theme.of(context).errorColor,
+                          color: customColors.red,
                           child: SvgPicture.asset(
                             AppIcons.delete,
-                            color: AppColors.whiteLight,
+                            color: customColors.white,
                           ),
                         ),
                         child: Container(
@@ -129,7 +134,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                         children: [
                           const SizedBox(width: 67),
                           Text(
-                            'Новое',
+                            appLocalizations.addNewTask,
                             style: Theme.of(context).textTheme.bodyText2,
                           ),
                         ],
@@ -177,6 +182,8 @@ class CusomSliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
+
     return SliverAppBar(
       pinned: _pinned,
       snap: _snap,
@@ -200,7 +207,7 @@ class CusomSliverAppBar extends StatelessWidget {
               title: Row(
                 children: [
                   Text(
-                    'Мои дела',
+                    appLocalizations.myTasks,
                     style: isCollapsed
                         ? Theme.of(context).textTheme.headline1!.copyWith(
                             fontSize: 20 + (12 * percentage), height: 1.6)
@@ -230,7 +237,7 @@ class CusomSliverAppBar extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        'Выполнено - 5',
+                        '${appLocalizations.done} - 5',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                       const Spacer(),

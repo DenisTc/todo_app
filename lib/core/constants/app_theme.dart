@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:todo_app/core/constants/app_colors.dart';
+import 'package:todo_app/core/extensions/custom_colors.dart';
 import 'package:todo_app/core/typography/typography.dart';
 
 class AppTheme {
@@ -10,7 +10,9 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.backPrimaryLight,
       dividerColor: AppColors.supportSeparatorLight,
       toggleableActiveColor: AppColors.blueLight,
-      errorColor: AppColors.redLight,
+      extensions: const <ThemeExtension<dynamic>>[
+        CustomColors.light,
+      ],
       textTheme: TextTheme(
         headline1: AppTextStyle.largeTitle.copyWith(
           color: AppColors.labelPrimaryLight,
