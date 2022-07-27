@@ -1,6 +1,6 @@
-import 'package:todo_app/core/constants/app_colors.dart';
-import 'package:todo_app/core/extensions/custom_colors.dart';
-import 'package:todo_app/core/typography/typography.dart';
+import 'package:todo_app/src/core/constants/app_colors.dart';
+import 'package:todo_app/src/core/extensions/custom_colors.dart';
+import 'package:todo_app/src/core/typography/typography.dart';
 
 class AppTheme {
   AppTheme._();

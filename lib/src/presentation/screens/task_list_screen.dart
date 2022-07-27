@@ -1,4 +1,4 @@
-import 'package:todo_app/imports.dart';
+import 'package:todo_app/src/imports.dart';
 
 class TaskListScreen extends StatefulWidget {
   const TaskListScreen({Key? key}) : super(key: key);
@@ -116,7 +116,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                       ),
                     );
                   },
-                  childCount: 19,
+                  childCount: 10,
                 ),
               ),
             ),

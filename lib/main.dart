@@ -1,17 +1,22 @@
-import 'package:todo_app/imports.dart';
+import 'package:todo_app/src/imports.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  final navigationController = NavigationController();
+  final routeObserver = RouteObserver();
 
   @override
   Widget build(BuildContext context) {
-    final navigationController = NavigationController();
-    final routeObserver = RouteObserver();
-
     return MultiProvider(
       providers: [
         Provider<NavigationController>.value(

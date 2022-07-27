@@ -1,4 +1,4 @@
-import 'package:todo_app/core/typography/typography.dart';
+import 'package:todo_app/src/core/typography/typography.dart';
 
 class AppTextStyle {
   static const largeTitle = TextStyle(
