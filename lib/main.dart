@@ -1,6 +1,10 @@
 import 'package:todo_app/src/imports.dart';
 
-void main() {
+Future<void> main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(TaskModelAdapter());
+  await Hive.openBox<TaskModel>('tasks');
+
   runApp(const App());
 }
 
@@ -25,6 +29,7 @@ class _AppState extends State<App> {
             value: routeObserver,
           ),
         ),
+        BlocProvider(create: (context) => TaskBloc()),
       ],
       child: MaterialApp(
         title: 'My Tasks',

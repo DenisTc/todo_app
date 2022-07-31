@@ -6,8 +6,8 @@ class Routes {
       case RouteConstant.main:
         return MaterialPageRoute(builder: (_) => const TaskListScreen());
       case RouteConstant.addTask:
-        return MaterialPageRoute(builder: (_) => const AddTaskScreen());
-
+        final task = settings.arguments as TaskModel?;
+        return MaterialPageRoute(builder: (_) => AddTaskScreen(task: task));
       default:
         return MaterialPageRoute(
           settings: settings,

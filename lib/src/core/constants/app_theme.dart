@@ -9,7 +9,9 @@ class AppTheme {
     return ThemeData(
       scaffoldBackgroundColor: AppColors.backPrimaryLight,
       dividerColor: AppColors.supportSeparatorLight,
+      disabledColor: AppColors.labelDisableLight,
       toggleableActiveColor: AppColors.blueLight,
+      // checkboxTheme: CheckboxThemeData(),
       extensions: const <ThemeExtension<dynamic>>[
         CustomColors.light,
       ],

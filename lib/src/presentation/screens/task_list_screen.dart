@@ -12,13 +12,15 @@ class _TaskListScreenState extends State<TaskListScreen> {
   final _snap = false;
   final _floating = false;
 
-  final appBarHeight = 150.0;
+  final appBarHeight = 170.0;
   double minAppbarPadding = 16.0;
+
+  bool isShowColpletedTask = false;
 
   @override
   Widget build(BuildContext context) {
-    final customColors = Theme.of(context).extension<CustomColors>()!;
-    final appLocalizations = AppLocalizations.of(context)!;
+    final box = Hive.box<TaskModel>('tasks');
+    final countCompletedTask = box.values.where((task) => task.done).length;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -37,121 +39,23 @@ class _TaskListScreenState extends State<TaskListScreen> {
               floating: _floating,
               appBarHeight: appBarHeight,
               minAppbarPadding: minAppbarPadding,
+              countCompletedTask: countCompletedTask,
+              isShowColpletedTask: isShowColpletedTask,
+              showColpletedTask: () => showColpletedTask(),
             ),
-            SliverToBoxAdapter(
-              child: Container(
-                margin: const EdgeInsets.only(top: 16),
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                height: 10,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Container(
-                      height: 10,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8.0),
-                          topRight: Radius.circular(8.0),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () => context
-                          .read<NavigationController>()
-                          .navigateTo(RouteConstant.addTask),
-                      child: Dismissible(
-                        key: Key(index.toString()),
-                        onDismissed: (DismissDirection direction) {},
-                        background: Container(
-                          padding: const EdgeInsets.only(left: 24),
-                          alignment: Alignment.centerLeft,
-                          color: customColors.green,
-                          child: SvgPicture.asset(
-                            AppIcons.check,
-                            color: customColors.white,
-                          ),
-                        ),
-                        secondaryBackground: Container(
-                          padding: const EdgeInsets.only(right: 24),
-                          alignment: Alignment.centerRight,
-                          color: customColors.red,
-                          child: SvgPicture.asset(
-                            AppIcons.delete,
-                            color: customColors.white,
-                          ),
-                        ),
-                        child: Container(
-                          height: 48.0,
-                          color: Colors.white,
-                          child: Row(
-                            children: [
-                              Checkbox(value: false, onChanged: (_) {}),
-                              const SizedBox(width: 15),
-                              Text(
-                                'Купить что-то',
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                              const Spacer(),
-                              IconButton(
-                                onPressed: () {},
-                                icon: SvgPicture.asset(
-                                  AppIcons.infoOutline,
-                                  width: 20,
-                                  height: 20,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  childCount: 10,
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 16),
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                height: 60,
-                child: Column(
-                  children: [
-                    Container(
-                      color: Colors.white,
-                      height: 48,
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 67),
-                          Text(
-                            appLocalizations.addNewTask,
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 10,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(8.0),
-                          bottomRight: Radius.circular(8.0),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  ValueListenableBuilder(
+                    valueListenable: box.listenable(),
+                    builder: (_, Box<TaskModel> box, __) {
+                      return _ListTasks(
+                        box: box,
+                        isShowColpletedTask: isShowColpletedTask,
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ],
@@ -159,9 +63,24 @@ class _TaskListScreenState extends State<TaskListScreen> {
       ),
     );
   }
+
+  void showColpletedTask() {
+    setState(() {
+      isShowColpletedTask = !isShowColpletedTask;
+    });
+  }
 }
 
 class CusomSliverAppBar extends StatelessWidget {
+  final bool _pinned;
+  final bool _snap;
+  final bool _floating;
+  final double appBarHeight;
+  final double minAppbarPadding;
+  final int? countCompletedTask;
+  final bool isShowColpletedTask;
+  final VoidCallback showColpletedTask;
+
   const CusomSliverAppBar({
     Key? key,
     required bool pinned,
@@ -169,16 +88,13 @@ class CusomSliverAppBar extends StatelessWidget {
     required bool floating,
     required this.appBarHeight,
     required this.minAppbarPadding,
+    required this.showColpletedTask,
+    this.countCompletedTask,
+    required this.isShowColpletedTask,
   })  : _pinned = pinned,
         _snap = snap,
         _floating = floating,
         super(key: key);
-
-  final bool _pinned;
-  final bool _snap;
-  final bool _floating;
-  final double appBarHeight;
-  final double minAppbarPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +118,7 @@ class CusomSliverAppBar extends StatelessWidget {
               centerTitle: false,
               titlePadding: EdgeInsetsDirectional.only(
                 start: minAppbarPadding + (44 * percentage),
-                bottom: 16,
+                bottom: minAppbarPadding + (20 * percentage),
               ),
               title: Row(
                 children: [
@@ -214,16 +130,20 @@ class CusomSliverAppBar extends StatelessWidget {
                         : Theme.of(context).textTheme.headline2,
                   ),
                   const Spacer(),
-                  Visibility(
-                    visible: !isCollapsed,
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
-                        child: SvgPicture.asset(
-                          AppIcons.visibilityOn,
-                          width: 23,
-                          height: 15,
+                  Material(
+                    child: Visibility(
+                      visible: !isCollapsed,
+                      child: GestureDetector(
+                        onTap: () {
+                          showColpletedTask();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 16.0),
+                          child: SvgPicture.asset(
+                            AppIcons.visibilityOn,
+                            width: 23,
+                            height: 15,
+                          ),
                         ),
                       ),
                     ),
@@ -237,14 +157,21 @@ class CusomSliverAppBar extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        '${appLocalizations.done} - 5',
+                        '${appLocalizations.done} - $countCompletedTask',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                       const Spacer(),
-                      SvgPicture.asset(
-                        AppIcons.visibilityOn,
-                        width: 23,
-                        height: 15,
+                      IconButton(
+                        onPressed: () {
+                          showColpletedTask();
+                        },
+                        icon: SvgPicture.asset(
+                          !isShowColpletedTask
+                              ? AppIcons.visibilityOn
+                              : AppIcons.visibilityOff,
+                          width: 23,
+                          height: 15,
+                        ),
                       ),
                     ],
                   ),
@@ -255,5 +182,239 @@ class CusomSliverAppBar extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class _ListTasks extends StatefulWidget {
+  final Box<TaskModel> box;
+  final bool isShowColpletedTask;
+  const _ListTasks({
+    Key? key,
+    required this.box,
+    required this.isShowColpletedTask,
+  }) : super(key: key);
+
+  @override
+  State<_ListTasks> createState() => _ListTasksState();
+}
+
+class _ListTasksState extends State<_ListTasks> {
+  @override
+  Widget build(BuildContext context) {
+    final taskBloc = BlocProvider.of<TaskBloc>(context);
+    final appLocalizations = AppLocalizations.of(context)!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+    final currentLocale = Localizations.localeOf(context).languageCode;
+    List<TaskModel> box = [];
+
+    if (widget.isShowColpletedTask) {
+      box = widget.box.values.where((item) => !item.done).toList();
+    } else {
+      box = widget.box.values.toList();
+    }
+
+    return ClipRRect(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+          child: Column(
+            children: [
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(0),
+                itemCount: box.length,
+                itemBuilder: (_, i) {
+                  final task = box[i];
+                  String? deadline;
+
+                  if (task.deadline != null) {
+                    deadline = DateFormat('d MMMM y', currentLocale)
+                        .format(
+                            DateTime.fromMicrosecondsSinceEpoch(task.deadline!))
+                        .toString();
+                  }
+
+                  return Dismissible(
+                    key: Key(task.id),
+                    confirmDismiss: (direction) async {
+                      switch (direction) {
+                        case DismissDirection.endToStart:
+                          taskBloc.add(TaskEvent.deleteTask(task.id));
+                          break;
+                        default:
+                          taskBloc.add(TaskEvent.completeTask(task));
+                          break;
+                      }
+                      return null;
+                    },
+                    background: Container(
+                      padding: const EdgeInsets.only(left: 24),
+                      alignment: Alignment.centerLeft,
+                      color: customColors.green,
+                      child: SvgPicture.asset(
+                        AppIcons.check,
+                        color: customColors.white,
+                      ),
+                    ),
+                    secondaryBackground: Container(
+                      padding: const EdgeInsets.only(right: 24),
+                      alignment: Alignment.centerRight,
+                      color: customColors.red,
+                      child: SvgPicture.asset(
+                        AppIcons.delete,
+                        color: customColors.white,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 19,
+                        top: 15,
+                        right: 18,
+                        bottom: 15,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 4, right: 15),
+                                child: SizedBox(
+                                  height: 18,
+                                  width: 18,
+                                  child: Checkbox(
+                                    value: task.done,
+                                    activeColor: customColors.green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(2.0),
+                                    ),
+                                    // side: MaterialStateBorderSide.resolveWith(
+                                    //   (states) => BorderSide(
+                                    //     width: 2.0,
+                                    //     color: task.importance ==
+                                    //             ImportanceTypeEnum
+                                    //                 .important.name
+                                    //         ? customColors.red!
+                                    //         : AppColors.labelTertiaryLight,
+                                    //   ),
+                                    // ),
+                                    onChanged: (_) => taskBloc
+                                        .add(TaskEvent.completeTask(task)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () => context
+                                  .read<NavigationController>()
+                                  .navigateTo(
+                                    RouteConstant.addTask,
+                                    arguments: task,
+                                  ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Visibility(
+                                        visible: task.importance !=
+                                            ImportanceTypeEnum.basic.name,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            top: 4,
+                                            right: 6,
+                                          ),
+                                          child: _getImportanceIcon(
+                                              task.importance),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          task.text,
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: task.done
+                                              ? Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText2!
+                                                  .copyWith(
+                                                      decoration: TextDecoration
+                                                          .lineThrough)
+                                              : Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 14,
+                                          top: 4,
+                                        ),
+                                        child: SvgPicture.asset(
+                                          AppIcons.infoOutline,
+                                          width: 20,
+                                          height: 20,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  if (deadline != null)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4),
+                                      child: Text(
+                                        deadline,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                height: 48,
+                child: Container(
+                  color: Colors.white,
+                  height: 48,
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 67),
+                      Text(
+                        appLocalizations.addNewTask,
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _getImportanceIcon(String importance) {
+    if (importance == ImportanceTypeEnum.important.name) {
+      return SvgPicture.asset(AppIcons.hightPriority);
+    } else if (importance == ImportanceTypeEnum.low.name) {
+      return SvgPicture.asset(AppIcons.lowPriority);
+    }
+
+    return const SizedBox.shrink();
   }
 }
