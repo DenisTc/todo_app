@@ -1,19 +1,16 @@
-import 'package:bloc/bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:platform_device_id/platform_device_id.dart';
-import 'package:todo_app/src/data/datasource/local/models/task_model.dart';
-import 'package:uuid/uuid.dart';
+import 'package:todo_app/src/imports.dart';
 
 part 'task_event.dart';
 part 'task_state.dart';
 part 'task_bloc.freezed.dart';
 
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
-  TaskBloc() : super(const _Initial()) {
+  final AppRepositoryImpl _appRepository;
+
+  TaskBloc(this._appRepository) : super(const _Initial()) {
     on<_AddTaskEvent>(_addTask);
     on<_DeleteTaskEvent>(_deleteTask);
-    on<_CompleteTaskEvent>(_completeTaskEvent);
+    on<_CompleteTaskEvent>(_completeTask);
     on<_UpdateTaskEvent>(_updateTask);
   }
 
@@ -21,7 +18,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     _AddTaskEvent event,
     Emitter<TaskState> emit,
   ) async {
-    final box = Hive.box<TaskModel>('tasks');
     const uuid = Uuid();
     final deviceId = await PlatformDeviceId.getDeviceId;
 
@@ -37,24 +33,20 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       lastUpdatedBy: deviceId!,
     );
 
-    box.add(newTask);
+    _appRepository.addTask(newTask);
   }
 
   Future<void> _deleteTask(
     _DeleteTaskEvent event,
     Emitter<TaskState> emit,
   ) async {
-    final box = Hive.box<TaskModel>('tasks');
-    final task = box.values.firstWhere((task) => task.id == event.id);
-
-    await task.delete();
+    _appRepository.deleteTask(event.task);
   }
 
   Future<void> _updateTask(
     _UpdateTaskEvent event,
     Emitter<TaskState> emit,
   ) async {
-    final box = Hive.box<TaskModel>('tasks');
     final deviceId = await PlatformDeviceId.getDeviceId;
 
     final updatedTask = TaskModel(
@@ -69,16 +61,13 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       lastUpdatedBy: deviceId!,
     );
 
-    final key = box.values.firstWhere((task) => task.id == updatedTask.id).key;
-
-    box.put(key, updatedTask);
+    _appRepository.updateTask(updatedTask);
   }
 
-  Future<void> _completeTaskEvent(
+  Future<void> _completeTask(
     _CompleteTaskEvent event,
     Emitter<TaskState> emit,
   ) async {
-    final box = Hive.box<TaskModel>('tasks');
     final deviceId = await PlatformDeviceId.getDeviceId;
 
     final updatedTask = TaskModel(
@@ -93,8 +82,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       lastUpdatedBy: deviceId!,
     );
 
-    final key = box.values.firstWhere((task) => task.id == updatedTask.id).key;
-
-    box.put(key, updatedTask);
+    _appRepository.updateTask(updatedTask);
   }
 }

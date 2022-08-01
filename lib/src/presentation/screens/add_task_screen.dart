@@ -26,6 +26,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       (element) => element.name == widget.task?.importance,
       orElse: () => ImportanceTypeEnum.basic,
     );
+
+    selectedDate = widget.task?.deadline != null
+        ? DateTime.fromMillisecondsSinceEpoch(widget.task!.deadline!)
+        : null;
   }
 
   @override
@@ -34,6 +38,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     final currentLocale = Localizations.localeOf(context).languageCode;
     final customColors = Theme.of(context).extension<CustomColors>()!;
     final appLocalizations = AppLocalizations.of(context)!;
+
     bool isToggled = selectedDate == null ? false : true;
 
     return Scaffold(
@@ -247,7 +252,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           : () {
                               context
                                   .read<TaskBloc>()
-                                  .add(TaskEvent.deleteTask(widget.task!.id));
+                                  .add(TaskEvent.deleteTask(widget.task!));
+
+                              context.read<NavigationController>().pop();
                             },
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),

@@ -9,6 +9,8 @@ export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:hive_flutter/hive_flutter.dart';
 export 'package:platform_device_id/platform_device_id.dart';
 export 'package:uuid/uuid.dart';
+export 'package:freezed_annotation/freezed_annotation.dart';
+export 'package:todo_app/src/data/storage/hive_db.dart';
 
 export 'package:todo_app/src/presentation/routes/controller.dart';
 export 'package:todo_app/src/presentation/routes/routes.dart';
@@ -20,3 +22,7 @@ export 'package:todo_app/src/core/extensions/custom_colors.dart';
 export 'package:todo_app/src/data/datasource/local/models/task_model.dart';
 export 'package:todo_app/src/core/enums/importance_type_enum.dart';
 export 'package:todo_app/src/presentation/bloc/task/task_bloc.dart';
+
+// Data
+export 'package:todo_app/src/data/repositories/app_repository_impl.dart';
+export 'package:todo_app/src/data/datasource/local/local_datasource_impl.dart';

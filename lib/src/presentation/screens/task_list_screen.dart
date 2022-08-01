@@ -231,7 +231,7 @@ class _ListTasksState extends State<_ListTasks> {
                   if (task.deadline != null) {
                     deadline = DateFormat('d MMMM y', currentLocale)
                         .format(
-                            DateTime.fromMicrosecondsSinceEpoch(task.deadline!))
+                            DateTime.fromMillisecondsSinceEpoch(task.deadline!))
                         .toString();
                   }
 
@@ -240,7 +240,7 @@ class _ListTasksState extends State<_ListTasks> {
                     confirmDismiss: (direction) async {
                       switch (direction) {
                         case DismissDirection.endToStart:
-                          taskBloc.add(TaskEvent.deleteTask(task.id));
+                          taskBloc.add(TaskEvent.deleteTask(task));
                           break;
                         default:
                           taskBloc.add(TaskEvent.completeTask(task));

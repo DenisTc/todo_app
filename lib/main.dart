@@ -1,9 +1,7 @@
 import 'package:todo_app/src/imports.dart';
 
 Future<void> main() async {
-  await Hive.initFlutter();
-  Hive.registerAdapter(TaskModelAdapter());
-  await Hive.openBox<TaskModel>('tasks');
+  await HiveDB.initialize();
 
   runApp(const App());
 }
@@ -16,8 +14,19 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  final box = Hive.box<TaskModel>('tasks');
   final navigationController = NavigationController();
   final routeObserver = RouteObserver();
+  late LocalDataSourceImpl localData;
+  late AppRepositoryImpl _appRepository;
+
+  @override
+  void initState() {
+    super.initState();
+
+    localData = LocalDataSourceImpl(box);
+    _appRepository = AppRepositoryImpl(localData);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +38,7 @@ class _AppState extends State<App> {
             value: routeObserver,
           ),
         ),
-        BlocProvider(create: (context) => TaskBloc()),
+        BlocProvider(create: (context) => TaskBloc(_appRepository)),
       ],
       child: MaterialApp(
         title: 'My Tasks',
