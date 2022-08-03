@@ -16,9 +16,9 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TaskEvent {
-  TaskModel get task => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loadAllTasks,
     required TResult Function(TaskModel task) addTask,
     required TResult Function(TaskModel task) updateTask,
     required TResult Function(TaskModel task) deleteTask,
@@ -27,6 +27,7 @@ mixin _$TaskEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? loadAllTasks,
     TResult Function(TaskModel task)? addTask,
     TResult Function(TaskModel task)? updateTask,
     TResult Function(TaskModel task)? deleteTask,
@@ -35,6 +36,7 @@ mixin _$TaskEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadAllTasks,
     TResult Function(TaskModel task)? addTask,
     TResult Function(TaskModel task)? updateTask,
     TResult Function(TaskModel task)? deleteTask,
@@ -44,6 +46,7 @@ mixin _$TaskEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_LoadAllTasksEvent value) loadAllTasks,
     required TResult Function(_AddTaskEvent value) addTask,
     required TResult Function(_UpdateTaskEvent value) updateTask,
     required TResult Function(_DeleteTaskEvent value) deleteTask,
@@ -52,6 +55,7 @@ mixin _$TaskEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_LoadAllTasksEvent value)? loadAllTasks,
     TResult Function(_AddTaskEvent value)? addTask,
     TResult Function(_UpdateTaskEvent value)? updateTask,
     TResult Function(_DeleteTaskEvent value)? deleteTask,
@@ -60,6 +64,7 @@ mixin _$TaskEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadAllTasksEvent value)? loadAllTasks,
     TResult Function(_AddTaskEvent value)? addTask,
     TResult Function(_UpdateTaskEvent value)? updateTask,
     TResult Function(_DeleteTaskEvent value)? deleteTask,
@@ -67,17 +72,12 @@ mixin _$TaskEvent {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $TaskEventCopyWith<TaskEvent> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $TaskEventCopyWith<$Res> {
   factory $TaskEventCopyWith(TaskEvent value, $Res Function(TaskEvent) then) =
       _$TaskEventCopyWithImpl<$Res>;
-  $Res call({TaskModel task});
 }
 
 /// @nodoc
@@ -87,27 +87,136 @@ class _$TaskEventCopyWithImpl<$Res> implements $TaskEventCopyWith<$Res> {
   final TaskEvent _value;
   // ignore: unused_field
   final $Res Function(TaskEvent) _then;
-
-  @override
-  $Res call({
-    Object? task = freezed,
-  }) {
-    return _then(_value.copyWith(
-      task: task == freezed
-          ? _value.task
-          : task // ignore: cast_nullable_to_non_nullable
-              as TaskModel,
-    ));
-  }
 }
 
 /// @nodoc
-abstract class _$$_AddTaskEventCopyWith<$Res>
-    implements $TaskEventCopyWith<$Res> {
+abstract class _$$_LoadAllTasksEventCopyWith<$Res> {
+  factory _$$_LoadAllTasksEventCopyWith(_$_LoadAllTasksEvent value,
+          $Res Function(_$_LoadAllTasksEvent) then) =
+      __$$_LoadAllTasksEventCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$_LoadAllTasksEventCopyWithImpl<$Res>
+    extends _$TaskEventCopyWithImpl<$Res>
+    implements _$$_LoadAllTasksEventCopyWith<$Res> {
+  __$$_LoadAllTasksEventCopyWithImpl(
+      _$_LoadAllTasksEvent _value, $Res Function(_$_LoadAllTasksEvent) _then)
+      : super(_value, (v) => _then(v as _$_LoadAllTasksEvent));
+
+  @override
+  _$_LoadAllTasksEvent get _value => super._value as _$_LoadAllTasksEvent;
+}
+
+/// @nodoc
+
+class _$_LoadAllTasksEvent implements _LoadAllTasksEvent {
+  const _$_LoadAllTasksEvent();
+
+  @override
+  String toString() {
+    return 'TaskEvent.loadAllTasks()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$_LoadAllTasksEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadAllTasks,
+    required TResult Function(TaskModel task) addTask,
+    required TResult Function(TaskModel task) updateTask,
+    required TResult Function(TaskModel task) deleteTask,
+    required TResult Function(TaskModel task) completeTask,
+  }) {
+    return loadAllTasks();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? loadAllTasks,
+    TResult Function(TaskModel task)? addTask,
+    TResult Function(TaskModel task)? updateTask,
+    TResult Function(TaskModel task)? deleteTask,
+    TResult Function(TaskModel task)? completeTask,
+  }) {
+    return loadAllTasks?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadAllTasks,
+    TResult Function(TaskModel task)? addTask,
+    TResult Function(TaskModel task)? updateTask,
+    TResult Function(TaskModel task)? deleteTask,
+    TResult Function(TaskModel task)? completeTask,
+    required TResult orElse(),
+  }) {
+    if (loadAllTasks != null) {
+      return loadAllTasks();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadAllTasksEvent value) loadAllTasks,
+    required TResult Function(_AddTaskEvent value) addTask,
+    required TResult Function(_UpdateTaskEvent value) updateTask,
+    required TResult Function(_DeleteTaskEvent value) deleteTask,
+    required TResult Function(_CompleteTaskEvent value) completeTask,
+  }) {
+    return loadAllTasks(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_LoadAllTasksEvent value)? loadAllTasks,
+    TResult Function(_AddTaskEvent value)? addTask,
+    TResult Function(_UpdateTaskEvent value)? updateTask,
+    TResult Function(_DeleteTaskEvent value)? deleteTask,
+    TResult Function(_CompleteTaskEvent value)? completeTask,
+  }) {
+    return loadAllTasks?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadAllTasksEvent value)? loadAllTasks,
+    TResult Function(_AddTaskEvent value)? addTask,
+    TResult Function(_UpdateTaskEvent value)? updateTask,
+    TResult Function(_DeleteTaskEvent value)? deleteTask,
+    TResult Function(_CompleteTaskEvent value)? completeTask,
+    required TResult orElse(),
+  }) {
+    if (loadAllTasks != null) {
+      return loadAllTasks(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _LoadAllTasksEvent implements TaskEvent {
+  const factory _LoadAllTasksEvent() = _$_LoadAllTasksEvent;
+}
+
+/// @nodoc
+abstract class _$$_AddTaskEventCopyWith<$Res> {
   factory _$$_AddTaskEventCopyWith(
           _$_AddTaskEvent value, $Res Function(_$_AddTaskEvent) then) =
       __$$_AddTaskEventCopyWithImpl<$Res>;
-  @override
   $Res call({TaskModel task});
 }
 
@@ -167,6 +276,7 @@ class _$_AddTaskEvent implements _AddTaskEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loadAllTasks,
     required TResult Function(TaskModel task) addTask,
     required TResult Function(TaskModel task) updateTask,
     required TResult Function(TaskModel task) deleteTask,
@@ -178,6 +288,7 @@ class _$_AddTaskEvent implements _AddTaskEvent {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? loadAllTasks,
     TResult Function(TaskModel task)? addTask,
     TResult Function(TaskModel task)? updateTask,
     TResult Function(TaskModel task)? deleteTask,
@@ -189,6 +300,7 @@ class _$_AddTaskEvent implements _AddTaskEvent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadAllTasks,
     TResult Function(TaskModel task)? addTask,
     TResult Function(TaskModel task)? updateTask,
     TResult Function(TaskModel task)? deleteTask,
@@ -204,6 +316,7 @@ class _$_AddTaskEvent implements _AddTaskEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_LoadAllTasksEvent value) loadAllTasks,
     required TResult Function(_AddTaskEvent value) addTask,
     required TResult Function(_UpdateTaskEvent value) updateTask,
     required TResult Function(_DeleteTaskEvent value) deleteTask,
@@ -215,6 +328,7 @@ class _$_AddTaskEvent implements _AddTaskEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_LoadAllTasksEvent value)? loadAllTasks,
     TResult Function(_AddTaskEvent value)? addTask,
     TResult Function(_UpdateTaskEvent value)? updateTask,
     TResult Function(_DeleteTaskEvent value)? deleteTask,
@@ -226,6 +340,7 @@ class _$_AddTaskEvent implements _AddTaskEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadAllTasksEvent value)? loadAllTasks,
     TResult Function(_AddTaskEvent value)? addTask,
     TResult Function(_UpdateTaskEvent value)? updateTask,
     TResult Function(_DeleteTaskEvent value)? deleteTask,
@@ -242,21 +357,17 @@ class _$_AddTaskEvent implements _AddTaskEvent {
 abstract class _AddTaskEvent implements TaskEvent {
   const factory _AddTaskEvent(final TaskModel task) = _$_AddTaskEvent;
 
-  @override
   TaskModel get task;
-  @override
   @JsonKey(ignore: true)
   _$$_AddTaskEventCopyWith<_$_AddTaskEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_UpdateTaskEventCopyWith<$Res>
-    implements $TaskEventCopyWith<$Res> {
+abstract class _$$_UpdateTaskEventCopyWith<$Res> {
   factory _$$_UpdateTaskEventCopyWith(
           _$_UpdateTaskEvent value, $Res Function(_$_UpdateTaskEvent) then) =
       __$$_UpdateTaskEventCopyWithImpl<$Res>;
-  @override
   $Res call({TaskModel task});
 }
 
@@ -317,6 +428,7 @@ class _$_UpdateTaskEvent implements _UpdateTaskEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loadAllTasks,
     required TResult Function(TaskModel task) addTask,
     required TResult Function(TaskModel task) updateTask,
     required TResult Function(TaskModel task) deleteTask,
@@ -328,6 +440,7 @@ class _$_UpdateTaskEvent implements _UpdateTaskEvent {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? loadAllTasks,
     TResult Function(TaskModel task)? addTask,
     TResult Function(TaskModel task)? updateTask,
     TResult Function(TaskModel task)? deleteTask,
@@ -339,6 +452,7 @@ class _$_UpdateTaskEvent implements _UpdateTaskEvent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadAllTasks,
     TResult Function(TaskModel task)? addTask,
     TResult Function(TaskModel task)? updateTask,
     TResult Function(TaskModel task)? deleteTask,
@@ -354,6 +468,7 @@ class _$_UpdateTaskEvent implements _UpdateTaskEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_LoadAllTasksEvent value) loadAllTasks,
     required TResult Function(_AddTaskEvent value) addTask,
     required TResult Function(_UpdateTaskEvent value) updateTask,
     required TResult Function(_DeleteTaskEvent value) deleteTask,
@@ -365,6 +480,7 @@ class _$_UpdateTaskEvent implements _UpdateTaskEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_LoadAllTasksEvent value)? loadAllTasks,
     TResult Function(_AddTaskEvent value)? addTask,
     TResult Function(_UpdateTaskEvent value)? updateTask,
     TResult Function(_DeleteTaskEvent value)? deleteTask,
@@ -376,6 +492,7 @@ class _$_UpdateTaskEvent implements _UpdateTaskEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadAllTasksEvent value)? loadAllTasks,
     TResult Function(_AddTaskEvent value)? addTask,
     TResult Function(_UpdateTaskEvent value)? updateTask,
     TResult Function(_DeleteTaskEvent value)? deleteTask,
@@ -392,21 +509,17 @@ class _$_UpdateTaskEvent implements _UpdateTaskEvent {
 abstract class _UpdateTaskEvent implements TaskEvent {
   const factory _UpdateTaskEvent(final TaskModel task) = _$_UpdateTaskEvent;
 
-  @override
   TaskModel get task;
-  @override
   @JsonKey(ignore: true)
   _$$_UpdateTaskEventCopyWith<_$_UpdateTaskEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_DeleteTaskEventCopyWith<$Res>
-    implements $TaskEventCopyWith<$Res> {
+abstract class _$$_DeleteTaskEventCopyWith<$Res> {
   factory _$$_DeleteTaskEventCopyWith(
           _$_DeleteTaskEvent value, $Res Function(_$_DeleteTaskEvent) then) =
       __$$_DeleteTaskEventCopyWithImpl<$Res>;
-  @override
   $Res call({TaskModel task});
 }
 
@@ -467,6 +580,7 @@ class _$_DeleteTaskEvent implements _DeleteTaskEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loadAllTasks,
     required TResult Function(TaskModel task) addTask,
     required TResult Function(TaskModel task) updateTask,
     required TResult Function(TaskModel task) deleteTask,
@@ -478,6 +592,7 @@ class _$_DeleteTaskEvent implements _DeleteTaskEvent {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? loadAllTasks,
     TResult Function(TaskModel task)? addTask,
     TResult Function(TaskModel task)? updateTask,
     TResult Function(TaskModel task)? deleteTask,
@@ -489,6 +604,7 @@ class _$_DeleteTaskEvent implements _DeleteTaskEvent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadAllTasks,
     TResult Function(TaskModel task)? addTask,
     TResult Function(TaskModel task)? updateTask,
     TResult Function(TaskModel task)? deleteTask,
@@ -504,6 +620,7 @@ class _$_DeleteTaskEvent implements _DeleteTaskEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_LoadAllTasksEvent value) loadAllTasks,
     required TResult Function(_AddTaskEvent value) addTask,
     required TResult Function(_UpdateTaskEvent value) updateTask,
     required TResult Function(_DeleteTaskEvent value) deleteTask,
@@ -515,6 +632,7 @@ class _$_DeleteTaskEvent implements _DeleteTaskEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_LoadAllTasksEvent value)? loadAllTasks,
     TResult Function(_AddTaskEvent value)? addTask,
     TResult Function(_UpdateTaskEvent value)? updateTask,
     TResult Function(_DeleteTaskEvent value)? deleteTask,
@@ -526,6 +644,7 @@ class _$_DeleteTaskEvent implements _DeleteTaskEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadAllTasksEvent value)? loadAllTasks,
     TResult Function(_AddTaskEvent value)? addTask,
     TResult Function(_UpdateTaskEvent value)? updateTask,
     TResult Function(_DeleteTaskEvent value)? deleteTask,
@@ -542,21 +661,17 @@ class _$_DeleteTaskEvent implements _DeleteTaskEvent {
 abstract class _DeleteTaskEvent implements TaskEvent {
   const factory _DeleteTaskEvent(final TaskModel task) = _$_DeleteTaskEvent;
 
-  @override
   TaskModel get task;
-  @override
   @JsonKey(ignore: true)
   _$$_DeleteTaskEventCopyWith<_$_DeleteTaskEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_CompleteTaskEventCopyWith<$Res>
-    implements $TaskEventCopyWith<$Res> {
+abstract class _$$_CompleteTaskEventCopyWith<$Res> {
   factory _$$_CompleteTaskEventCopyWith(_$_CompleteTaskEvent value,
           $Res Function(_$_CompleteTaskEvent) then) =
       __$$_CompleteTaskEventCopyWithImpl<$Res>;
-  @override
   $Res call({TaskModel task});
 }
 
@@ -618,6 +733,7 @@ class _$_CompleteTaskEvent implements _CompleteTaskEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loadAllTasks,
     required TResult Function(TaskModel task) addTask,
     required TResult Function(TaskModel task) updateTask,
     required TResult Function(TaskModel task) deleteTask,
@@ -629,6 +745,7 @@ class _$_CompleteTaskEvent implements _CompleteTaskEvent {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? loadAllTasks,
     TResult Function(TaskModel task)? addTask,
     TResult Function(TaskModel task)? updateTask,
     TResult Function(TaskModel task)? deleteTask,
@@ -640,6 +757,7 @@ class _$_CompleteTaskEvent implements _CompleteTaskEvent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadAllTasks,
     TResult Function(TaskModel task)? addTask,
     TResult Function(TaskModel task)? updateTask,
     TResult Function(TaskModel task)? deleteTask,
@@ -655,6 +773,7 @@ class _$_CompleteTaskEvent implements _CompleteTaskEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_LoadAllTasksEvent value) loadAllTasks,
     required TResult Function(_AddTaskEvent value) addTask,
     required TResult Function(_UpdateTaskEvent value) updateTask,
     required TResult Function(_DeleteTaskEvent value) deleteTask,
@@ -666,6 +785,7 @@ class _$_CompleteTaskEvent implements _CompleteTaskEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_LoadAllTasksEvent value)? loadAllTasks,
     TResult Function(_AddTaskEvent value)? addTask,
     TResult Function(_UpdateTaskEvent value)? updateTask,
     TResult Function(_DeleteTaskEvent value)? deleteTask,
@@ -677,6 +797,7 @@ class _$_CompleteTaskEvent implements _CompleteTaskEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadAllTasksEvent value)? loadAllTasks,
     TResult Function(_AddTaskEvent value)? addTask,
     TResult Function(_UpdateTaskEvent value)? updateTask,
     TResult Function(_DeleteTaskEvent value)? deleteTask,
@@ -693,9 +814,7 @@ class _$_CompleteTaskEvent implements _CompleteTaskEvent {
 abstract class _CompleteTaskEvent implements TaskEvent {
   const factory _CompleteTaskEvent(final TaskModel task) = _$_CompleteTaskEvent;
 
-  @override
   TaskModel get task;
-  @override
   @JsonKey(ignore: true)
   _$$_CompleteTaskEventCopyWith<_$_CompleteTaskEvent> get copyWith =>
       throw _privateConstructorUsedError;

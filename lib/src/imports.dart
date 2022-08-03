@@ -11,6 +11,7 @@ export 'package:platform_device_id/platform_device_id.dart';
 export 'package:uuid/uuid.dart';
 export 'package:freezed_annotation/freezed_annotation.dart';
 export 'package:todo_app/src/data/storage/hive_db.dart';
+export 'package:dio/dio.dart';
 export 'package:flutter_dotenv/flutter_dotenv.dart';
 
 export 'package:todo_app/src/presentation/routes/controller.dart';

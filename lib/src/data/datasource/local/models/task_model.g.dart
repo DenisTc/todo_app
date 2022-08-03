@@ -63,3 +63,31 @@ class TaskModelAdapter extends TypeAdapter<TaskModel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+TaskModel _$TaskModelFromJson(Map<String, dynamic> json) => TaskModel(
+      id: json['id'] as String,
+      text: json['text'] as String,
+      importance: json['importance'] as String,
+      deadline: json['deadline'] as int?,
+      done: json['done'] as bool? ?? false,
+      color: json['color'] as String?,
+      createdAt: json['created_at'] as int,
+      changedAt: json['changed_at'] as int,
+      lastUpdatedBy: json['last_updated_by'] as String,
+    );
+
+Map<String, dynamic> _$TaskModelToJson(TaskModel instance) => <String, dynamic>{
+      'id': instance.id,
+      'text': instance.text,
+      'importance': instance.importance,
+      'deadline': instance.deadline,
+      'done': instance.done,
+      'color': instance.color,
+      'created_at': instance.createdAt,
+      'changed_at': instance.changedAt,
+      'last_updated_by': instance.lastUpdatedBy,
+    };

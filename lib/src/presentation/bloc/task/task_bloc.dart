@@ -8,10 +8,18 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final AppRepositoryImpl _appRepository;
 
   TaskBloc(this._appRepository) : super(const _Initial()) {
+    on<_LoadAllTasksEvent>(_loadAllTasksEvent);
     on<_AddTaskEvent>(_addTask);
     on<_DeleteTaskEvent>(_deleteTask);
     on<_CompleteTaskEvent>(_completeTask);
     on<_UpdateTaskEvent>(_updateTask);
+  }
+
+  Future<void> _loadAllTasksEvent(
+    _LoadAllTasksEvent event,
+    Emitter<TaskState> emit,
+  ) async {
+    await _appRepository.getAllTasks();
   }
 
   Future<void> _addTask(
@@ -27,7 +35,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       importance: event.task.importance,
       deadline: event.task.deadline,
       done: false,
-      // color: '',
       createdAt: DateTime.now().millisecondsSinceEpoch,
       changedAt: DateTime.now().millisecondsSinceEpoch,
       lastUpdatedBy: deviceId!,

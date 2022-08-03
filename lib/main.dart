@@ -1,3 +1,5 @@
+import 'package:todo_app/src/data/api/api.dart';
+import 'package:todo_app/src/data/datasource/remote/remote_datasource_impl.dart';
 import 'package:todo_app/src/imports.dart';
 
 Future<void> main() async {
@@ -15,18 +17,25 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final box = Hive.box<TaskModel>('tasks');
-  final navigationController = NavigationController();
-  final routeObserver = RouteObserver();
-  late LocalDataSourceImpl localData;
+  final _boxTasks = Hive.box<TaskModel>('tasks');
+  final _api = Api();
+  final _navigationController = NavigationController();
+  final _routeObserver = RouteObserver();
+  late LocalDataSourceImpl _localDatasource;
+  late RemoteDatasourceImpl _remouteDatasource;
   late AppRepositoryImpl _appRepository;
 
   @override
   void initState() {
     super.initState();
 
-    localData = LocalDataSourceImpl(box);
-    _appRepository = AppRepositoryImpl(localData);
+    _localDatasource = LocalDataSourceImpl(boxTasks: _boxTasks);
+    _remouteDatasource = RemoteDatasourceImpl(_api);
+
+    _appRepository = AppRepositoryImpl(
+      localDatasource: _localDatasource,
+      remoteDatasource: _remouteDatasource,
+    );
   }
 
   @override
@@ -34,16 +43,19 @@ class _AppState extends State<App> {
     return MultiProvider(
       providers: [
         Provider<NavigationController>.value(
-          value: navigationController,
+          value: _navigationController,
           child: Provider<RouteObserver>.value(
-            value: routeObserver,
+            value: _routeObserver,
           ),
         ),
-        BlocProvider(create: (context) => TaskBloc(_appRepository)),
+        BlocProvider(
+          create: (context) =>
+              TaskBloc(_appRepository)..add(const TaskEvent.loadAllTasks()),
+        ),
       ],
       child: MaterialApp(
         title: 'My Tasks',
-        navigatorKey: navigationController.key,
+        navigatorKey: _navigationController.key,
         onGenerateRoute: Routes.generateRoute,
         initialRoute: RouteConstant.main,
         theme: AppTheme.lightTheme,

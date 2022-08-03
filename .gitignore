@@ -48,3 +48,6 @@ app.*.map.json
 
 # My scripts
 scripts.txt
+
+# Environments
+assets/env

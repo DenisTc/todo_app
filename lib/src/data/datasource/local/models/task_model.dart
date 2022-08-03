@@ -1,8 +1,10 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
 part 'task_model.g.dart';
 
 @HiveType(typeId: 0)
+@JsonSerializable(fieldRename: FieldRename.snake)
 class TaskModel extends HiveObject {
   @HiveField(0)
   final String id;
@@ -42,4 +44,9 @@ class TaskModel extends HiveObject {
     required this.changedAt,
     required this.lastUpdatedBy,
   });
+
+  factory TaskModel.fromJson(Map<String, dynamic> json) =>
+      _$TaskModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TaskModelToJson(this);
 }
