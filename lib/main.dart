@@ -1,6 +1,7 @@
 import 'package:todo_app/src/imports.dart';
 
 Future<void> main() async {
+  await dotenv.load(fileName: Environment.fileName);
   await HiveDB.initialize();
 
   runApp(const App());
