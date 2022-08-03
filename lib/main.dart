@@ -54,7 +54,7 @@ class _AppState extends State<App> {
         ),
       ],
       child: MaterialApp(
-        title: 'My Tasks',
+        title: 'Done',
         navigatorKey: _navigationController.key,
         onGenerateRoute: Routes.generateRoute,
         initialRoute: RouteConstant.main,
