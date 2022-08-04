@@ -29,3 +29,7 @@ export 'package:todo_app/src/core/environments/environment.dart';
 // Data
 export 'package:todo_app/src/data/repositories/app_repository_impl.dart';
 export 'package:todo_app/src/data/datasource/local/local_datasource_impl.dart';
+
+// Firebase
+export 'package:firebase_core/firebase_core.dart';
+export 'package:firebase_remote_config/firebase_remote_config.dart';

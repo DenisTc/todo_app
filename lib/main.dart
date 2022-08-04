@@ -1,10 +1,14 @@
 import 'package:todo_app/src/data/api/api.dart';
 import 'package:todo_app/src/data/datasource/remote/remote_datasource_impl.dart';
+import 'package:todo_app/src/data/services/firebase/remote_config_service.dart';
 import 'package:todo_app/src/imports.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: Environment.fileName);
   await HiveDB.initialize();
+  await Firebase.initializeApp();
+  RemoteConfigService.instance.initRemoteConfig();
 
   runApp(const App());
 }
@@ -24,6 +28,8 @@ class _AppState extends State<App> {
   late LocalDataSourceImpl _localDatasource;
   late RemoteDatasourceImpl _remouteDatasource;
   late AppRepositoryImpl _appRepository;
+  ThemeData currentTheme = AppTheme.lightTheme;
+  Color? primaryColor;
 
   @override
   void initState() {
@@ -36,6 +42,8 @@ class _AppState extends State<App> {
       localDatasource: _localDatasource,
       remoteDatasource: _remouteDatasource,
     );
+
+    primaryColor = RemoteConfigService.instance.getPrimaryColor();
   }
 
   @override
@@ -58,7 +66,7 @@ class _AppState extends State<App> {
         navigatorKey: _navigationController.key,
         onGenerateRoute: Routes.generateRoute,
         initialRoute: RouteConstant.main,
-        theme: AppTheme.lightTheme,
+        theme: currentTheme.copyWith(primaryColor: primaryColor),
         supportedLocales: L10n.all,
         localizationsDelegates: const [
           AppLocalizations.delegate,
@@ -71,3 +79,9 @@ class _AppState extends State<App> {
     );
   }
 }
+
+// Future<void> _initFirebaseConfig() async {
+//   RemoteConfigService.instance.initRemoteConfig();
+//   // await RemoteConfigService.instance.setDefaultValue();
+//   // await RemoteConfigService.instance.updateValue();
+// }

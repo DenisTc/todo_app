@@ -410,7 +410,10 @@ class _ListTasksState extends State<_ListTasks> {
 
   Widget _getImportanceIcon(String importance) {
     if (importance == ImportanceTypeEnum.important.name) {
-      return SvgPicture.asset(AppIcons.hightPriority);
+      return SvgPicture.asset(
+        AppIcons.hightPriority,
+        color: Theme.of(context).primaryColor,
+      );
     } else if (importance == ImportanceTypeEnum.low.name) {
       return SvgPicture.asset(AppIcons.lowPriority);
     }

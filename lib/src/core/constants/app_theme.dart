@@ -1,5 +1,4 @@
 import 'package:todo_app/src/core/constants/app_colors.dart';
-import 'package:todo_app/src/core/extensions/custom_colors.dart';
 import 'package:todo_app/src/core/typography/typography.dart';
 
 class AppTheme {
@@ -8,13 +7,13 @@ class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       scaffoldBackgroundColor: AppColors.backPrimaryLight,
+      primaryColor: AppColors.redLight,
       dividerColor: AppColors.supportSeparatorLight,
       disabledColor: AppColors.labelDisableLight,
       toggleableActiveColor: AppColors.blueLight,
-      // checkboxTheme: CheckboxThemeData(),
-      extensions: const <ThemeExtension<dynamic>>[
-        CustomColors.light,
-      ],
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: AppColors.blueLight,
+      ),
       textTheme: TextTheme(
         headline1: AppTextStyle.largeTitle.copyWith(
           color: AppColors.labelPrimaryLight,

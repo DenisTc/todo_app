@@ -36,7 +36,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   Widget build(BuildContext context) {
     final isEditMode = widget.task != null;
     final currentLocale = Localizations.localeOf(context).languageCode;
-    final customColors = Theme.of(context).extension<CustomColors>()!;
     final appLocalizations = AppLocalizations.of(context)!;
 
     bool isToggled = selectedDate == null ? false : true;
@@ -174,7 +173,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                                   .textTheme
                                                   .subtitle1!
                                                   .copyWith(
-                                                      color: customColors.red),
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
                                         ),
                                       );
                                     }).toList(),
@@ -227,8 +227,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           ),
                           const Spacer(),
                           Switch(
-                            activeColor:
-                                Theme.of(context).toggleableActiveColor,
                             value: isToggled,
                             onChanged: (value) async {
                               if (!value) {
@@ -264,7 +262,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               AppIcons.delete,
                               color: !isEditMode
                                   ? Theme.of(context).disabledColor
-                                  : customColors.red,
+                                  : Theme.of(context).primaryColor,
                             ),
                             const SizedBox(width: 12),
                             Text(
@@ -275,7 +273,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                   .copyWith(
                                     color: !isEditMode
                                         ? Theme.of(context).disabledColor
-                                        : customColors.red,
+                                        : Theme.of(context).primaryColor,
                                   ),
                             ),
                           ],
