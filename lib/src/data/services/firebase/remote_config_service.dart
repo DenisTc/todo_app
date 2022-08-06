@@ -1,5 +1,4 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter/material.dart';
 
 class RemoteConfigService {
   late FirebaseRemoteConfig firebaseRemoteConfig;
@@ -10,13 +9,18 @@ class RemoteConfigService {
 
   void initRemoteConfig() {
     firebaseRemoteConfig = FirebaseRemoteConfig.instance;
+    firebaseRemoteConfig.fetchAndActivate();
   }
 
-  Color? getPrimaryColor() {
+  int? getPrimaryColor() {
     final data = firebaseRemoteConfig.getString('primary_color');
-    final hexColor = data.replaceAll('#', '0xff');
-    final primaryColor = Color(int.parse(hexColor));
+    if (data.isNotEmpty) {
+      final hexColor = data.replaceAll('#', '0xff');
+      final primaryColor = int.parse(hexColor);
 
-    return primaryColor;
+      return primaryColor;
+    }
+
+    return null;
   }
 }

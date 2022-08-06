@@ -1,4 +1,5 @@
 import 'package:todo_app/src/core/constants/app_colors.dart';
+import 'package:todo_app/src/core/extensions/custom_colors.dart';
 import 'package:todo_app/src/core/typography/typography.dart';
 
 class AppTheme {
@@ -14,6 +15,9 @@ class AppTheme {
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: AppColors.blueLight,
       ),
+      extensions: const <ThemeExtension<dynamic>>[
+        CustomColors.light,
+      ],
       textTheme: TextTheme(
         headline1: AppTextStyle.largeTitle.copyWith(
           color: AppColors.labelPrimaryLight,

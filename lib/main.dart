@@ -43,7 +43,10 @@ class _AppState extends State<App> {
       remoteDatasource: _remouteDatasource,
     );
 
-    primaryColor = RemoteConfigService.instance.getPrimaryColor();
+    final codeColor = RemoteConfigService.instance.getPrimaryColor();
+    if (codeColor != null) {
+      primaryColor = Color(codeColor);
+    }
   }
 
   @override
