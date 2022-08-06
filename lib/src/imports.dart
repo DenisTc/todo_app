@@ -33,3 +33,4 @@ export 'package:todo_app/src/data/datasource/local/local_datasource_impl.dart';
 // Firebase
 export 'package:firebase_core/firebase_core.dart';
 export 'package:firebase_remote_config/firebase_remote_config.dart';
+export 'package:firebase_crashlytics/firebase_crashlytics.dart';

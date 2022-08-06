@@ -9,6 +9,7 @@ Future<void> main() async {
   await HiveDB.initialize();
   await Firebase.initializeApp();
   RemoteConfigService.instance.initRemoteConfig();
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   runApp(const App());
 }
