@@ -21,7 +21,6 @@ class _TaskListScreenState extends State<TaskListScreen> {
   @override
   Widget build(BuildContext context) {
     final box = Hive.box<TaskModel>('tasks');
-    final countCompletedTask = box.values.where((task) => task.done).length;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -35,35 +34,36 @@ class _TaskListScreenState extends State<TaskListScreen> {
       ),
       body: SafeArea(
         bottom: false,
-        child: CustomScrollView(
-          slivers: [
-            CusomSliverAppBar(
-              pinned: _pinned,
-              snap: _snap,
-              floating: _floating,
-              appBarHeight: appBarHeight,
-              minAppbarPadding: minAppbarPadding,
-              countCompletedTask: countCompletedTask,
-              isShowColpletedTask: isShowColpletedTask,
-              showColpletedTask: () => showColpletedTask(),
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  ValueListenableBuilder(
-                    valueListenable: box.listenable(),
-                    builder: (_, Box<TaskModel> box, __) {
-                      return _ListTasks(
-                        box: box,
-                        isShowColpletedTask: isShowColpletedTask,
-                      );
-                    },
+        child: ValueListenableBuilder(
+            valueListenable: box.listenable(),
+            builder: (_, Box<TaskModel> box, __) {
+              final countCompletedTask =
+                  box.values.where((task) => task.done).length;
+              return CustomScrollView(
+                slivers: [
+                  CusomSliverAppBar(
+                    pinned: _pinned,
+                    snap: _snap,
+                    floating: _floating,
+                    appBarHeight: appBarHeight,
+                    minAppbarPadding: minAppbarPadding,
+                    countCompletedTask: countCompletedTask,
+                    isShowColpletedTask: isShowColpletedTask,
+                    showColpletedTask: () => showColpletedTask(),
+                  ),
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        _ListTasks(
+                          box: box,
+                          isShowColpletedTask: isShowColpletedTask,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
-              ),
-            ),
-          ],
-        ),
+              );
+            }),
       ),
     );
   }
@@ -315,9 +315,6 @@ class _ListTasksState extends State<_ListTasks> {
                                             status: task.done,
                                             isImportant: isImportant,
                                           ),
-                                          // color: isImpartance
-                                          //     ? customColors.red!
-                                          //     : AppColors.labelTertiaryLight,
                                         ),
                                       ),
                                       onChanged: (_) => taskBloc

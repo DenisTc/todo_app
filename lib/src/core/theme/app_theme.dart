@@ -17,11 +17,14 @@ class AppTheme {
         primary: AppColors.blueLight,
       ),
       switchTheme: SwitchThemeData(
-        trackColor: MaterialStateProperty.resolveWith((states) {
-          if (!states.contains(MaterialState.selected)) {
-            return AppColors.supportOverlayLight;
-          }
-        }),
+        trackColor: MaterialStateProperty.resolveWith(
+          (states) {
+            if (!states.contains(MaterialState.selected)) {
+              return AppColors.supportOverlayLight;
+            }
+            return null;
+          },
+        ),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: AppColors.blueLight,
