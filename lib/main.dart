@@ -94,14 +94,9 @@ class _AppState extends State<App> {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+        debugShowCheckedModeBanner: false,
         home: const TaskListScreen(),
       ),
     );
   }
 }
-
-// Future<void> _initFirebaseConfig() async {
-//   RemoteConfigService.instance.initRemoteConfig();
-//   // await RemoteConfigService.instance.setDefaultValue();
-//   // await RemoteConfigService.instance.updateValue();
-// }

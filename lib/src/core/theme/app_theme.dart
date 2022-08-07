@@ -16,6 +16,14 @@ class AppTheme {
       colorScheme: const ColorScheme.light(
         primary: AppColors.blueLight,
       ),
+      cardTheme: const CardTheme(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8.0),
+          ),
+        ),
+      ),
       switchTheme: SwitchThemeData(
         trackColor: MaterialStateProperty.resolveWith(
           (states) {

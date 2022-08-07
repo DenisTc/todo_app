@@ -15,6 +15,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
 
   final appBarHeight = 170.0;
   double minAppbarPadding = 16.0;
+  double minAppbarBottomPadding = 12.0;
 
   bool isShowColpletedTask = false;
 
@@ -47,6 +48,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                     floating: _floating,
                     appBarHeight: appBarHeight,
                     minAppbarPadding: minAppbarPadding,
+                    minAppbarBottomPadding: minAppbarBottomPadding,
                     countCompletedTask: countCompletedTask,
                     isShowColpletedTask: isShowColpletedTask,
                     showColpletedTask: () => showColpletedTask(),
@@ -81,6 +83,7 @@ class CusomSliverAppBar extends StatelessWidget {
   final bool _floating;
   final double appBarHeight;
   final double minAppbarPadding;
+  final double minAppbarBottomPadding;
   final int? countCompletedTask;
   final bool isShowColpletedTask;
   final VoidCallback showColpletedTask;
@@ -92,6 +95,7 @@ class CusomSliverAppBar extends StatelessWidget {
     required bool floating,
     required this.appBarHeight,
     required this.minAppbarPadding,
+    required this.minAppbarBottomPadding,
     required this.showColpletedTask,
     this.countCompletedTask,
     required this.isShowColpletedTask,
@@ -122,7 +126,7 @@ class CusomSliverAppBar extends StatelessWidget {
               centerTitle: false,
               titlePadding: EdgeInsetsDirectional.only(
                 start: minAppbarPadding + (44 * percentage),
-                bottom: minAppbarPadding + (20 * percentage),
+                bottom: minAppbarBottomPadding + (20 * percentage),
               ),
               title: Row(
                 children: [
@@ -209,6 +213,7 @@ class _ListTasksState extends State<_ListTasks> {
     final appLocalizations = AppLocalizations.of(context)!;
     final customColors = Theme.of(context).extension<CustomColors>()!;
     final currentLocale = Localizations.localeOf(context).languageCode;
+    final textController = TextEditingController();
     List<TaskModel> box = [];
 
     if (widget.isShowColpletedTask) {
@@ -298,7 +303,7 @@ class _ListTasksState extends State<_ListTasks> {
                                   child: Container(
                                     color: isImportant && !task.done
                                         ? Theme.of(context)
-                                            .errorColor
+                                            .primaryColor
                                             .withOpacity(.16)
                                         : Colors.transparent,
                                     child: Checkbox(
@@ -338,7 +343,7 @@ class _ListTasksState extends State<_ListTasks> {
                                 children: [
                                   Row(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Visibility(
                                         visible: task.importance !=
@@ -405,29 +410,28 @@ class _ListTasksState extends State<_ListTasks> {
               Container(
                 padding: const EdgeInsets.only(right: 8),
                 height: 48,
-                child: Container(
-                  color: Colors.white,
-                  height: 48,
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 67),
-                      Expanded(
-                        child: TextFormField(
-                          onFieldSubmitted: (value) =>
-                              context.read<NavigationController>().navigateTo(
+                child: Row(
+                  children: [
+                    const SizedBox(width: 67),
+                    Expanded(
+                      child: TextFormField(
+                        controller: textController,
+                        onFieldSubmitted: (value) {
+                          context.read<NavigationController>().navigateTo(
                             RouteConstant.addTask,
                             arguments: {'text': value},
-                          ),
-                          style: Theme.of(context).textTheme.bodyText1,
-                          decoration: InputDecoration(
-                            hintText: appLocalizations.addNewTask,
-                            hintStyle: Theme.of(context).textTheme.bodyText2,
-                            border: InputBorder.none,
-                          ),
+                          );
+                          textController.clear();
+                        },
+                        style: Theme.of(context).textTheme.bodyText1,
+                        decoration: InputDecoration(
+                          hintText: appLocalizations.addNewTask,
+                          hintStyle: Theme.of(context).textTheme.bodyText2,
+                          border: InputBorder.none,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -440,7 +444,7 @@ class _ListTasksState extends State<_ListTasks> {
   Color _getBorderColor({required bool status, required bool isImportant}) {
     if (!status) {
       if (isImportant) {
-        return Theme.of(context).errorColor;
+        return Theme.of(context).primaryColor;
       } else {
         return AppColors.labelTertiaryLight;
       }
