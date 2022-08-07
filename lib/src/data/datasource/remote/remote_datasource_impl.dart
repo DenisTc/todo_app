@@ -1,3 +1,4 @@
+import 'package:todo_app/src/core/logs/app_logger.dart';
 import 'package:todo_app/src/data/api/api.dart';
 import 'package:todo_app/src/data/api/api_routes.dart';
 import 'package:todo_app/src/data/datasource/remote/remote_datasource.dart';
@@ -17,6 +18,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
 
       return AllTasksResponseEntity.fromJson(response.data);
     } catch (e) {
+      AppLogger().e(e);
       return const AllTasksResponseEntity(status: 'error');
     }
   }
@@ -38,6 +40,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
 
       return TaskResponseEntity.fromJson(response.data);
     } catch (e) {
+      AppLogger().e(e);
       return const TaskResponseEntity(status: 'error');
     }
   }
@@ -55,6 +58,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
 
       return TaskResponseEntity.fromJson(response.data);
     } catch (e) {
+      AppLogger().e(e);
       return const TaskResponseEntity(status: 'error');
     }
   }
@@ -76,6 +80,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
 
       return TaskResponseEntity.fromJson(response.data);
     } catch (e) {
+      AppLogger().e(e);
       return const TaskResponseEntity(status: 'error');
     }
   }
@@ -97,6 +102,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
       );
       return AllTasksResponseEntity.fromJson(response.data);
     } catch (e) {
+      AppLogger().e(e);
       return const AllTasksResponseEntity(status: 'error');
     }
   }

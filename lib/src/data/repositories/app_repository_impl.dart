@@ -21,7 +21,7 @@ class AppRepositoryImpl extends AppRepository {
     final result = await _remoteDatasource.getAllTasks();
 
     if (result.status == 'ok') {
-      // Если на бёке более актуальная ривизия которой у нас нет, то
+      // Если на бэке более актуальная ривизия которой у нас нет, то
       // удаляем локальные данные и записываем актуальные с бэка
       if (revision != result.revision) {
         await _localDatasource.deleteAllTasks();

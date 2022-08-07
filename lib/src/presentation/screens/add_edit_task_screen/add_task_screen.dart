@@ -82,8 +82,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       lastUpdatedBy: deviceId!,
                     );
 
-                    // TODO(Denis): нужно пофиксить предупреждение линта
-                    // Стоит ли в UI вычислять uuid/deviceid или делать это в блоке?
                     if (!mounted) return;
                     if (isEditMode) {
                       context.read<TaskBloc>().add(TaskEvent.updateTask(task));

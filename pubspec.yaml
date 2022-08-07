@@ -27,6 +27,9 @@ dependencies:
   platform_device_id: ^1.0.1
   flutter_dotenv: ^5.0.2
 
+  # Logs
+  logger: ^1.1.0
+
   # DB
   hive: ^2.2.3
   hive_flutter: ^1.1.0
