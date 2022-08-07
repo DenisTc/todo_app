@@ -18,7 +18,7 @@ export 'package:todo_app/src/presentation/routes/controller.dart';
 export 'package:todo_app/src/presentation/routes/routes.dart';
 export 'package:todo_app/src/presentation/routes/route_constants.dart';
 export 'package:todo_app/src/presentation/screens/screens.dart';
-export 'package:todo_app/src/core/constants/app_theme.dart';
+export 'package:todo_app/src/core/theme/app_theme.dart';
 export 'package:todo_app/src/core/constants/app_icons.dart';
 export 'package:todo_app/src/core/extensions/custom_colors.dart';
 export 'package:todo_app/src/data/datasource/local/models/task_model.dart';

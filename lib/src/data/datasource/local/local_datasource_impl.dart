@@ -6,10 +6,15 @@ import 'package:todo_app/src/data/storage/hive_db.dart';
 
 class LocalDataSourceImpl implements LocalDataSource {
   final Box<TaskModel> _boxTasks;
+  final SharedPreferences _sharedPreferences;
+
   HiveDB hiveDB = HiveDB();
 
-  LocalDataSourceImpl({required Box<TaskModel> boxTasks})
-      : _boxTasks = boxTasks;
+  LocalDataSourceImpl({
+    required Box<TaskModel> boxTasks,
+    required SharedPreferences sharedPreferences,
+  })  : _boxTasks = boxTasks,
+        _sharedPreferences = sharedPreferences;
 
   @override
   Future<void> addTask(TaskModel task) async {
@@ -50,25 +55,21 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<void> saveRevision(int revision) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('revision', revision);
+    await _sharedPreferences.setInt('revision', revision);
   }
 
   @override
   Future<int> getRevision() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('revision') ?? 0;
+    return _sharedPreferences.getInt('revision') ?? 0;
   }
 
   @override
   Future<void> saveOfflineDataStatus(bool status) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('hasOfflineData', status);
+    await _sharedPreferences.setBool('hasOfflineData', status);
   }
 
   @override
   Future<bool> getOfflineDataStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('hasOfflineData') ?? false;
+    return _sharedPreferences.getBool('hasOfflineData') ?? false;
   }
 }

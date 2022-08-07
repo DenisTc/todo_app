@@ -1,6 +1,6 @@
 import 'package:todo_app/src/core/constants/app_colors.dart';
 import 'package:todo_app/src/core/extensions/custom_colors.dart';
-import 'package:todo_app/src/core/typography/typography.dart';
+import 'package:todo_app/src/core/theme/typography/typography.dart';
 
 class AppTheme {
   AppTheme._();
@@ -12,6 +12,17 @@ class AppTheme {
       dividerColor: AppColors.supportSeparatorLight,
       disabledColor: AppColors.labelDisableLight,
       toggleableActiveColor: AppColors.blueLight,
+      errorColor: AppColors.redLight,
+      colorScheme: const ColorScheme.light(
+        primary: AppColors.blueLight,
+      ),
+      switchTheme: SwitchThemeData(
+        trackColor: MaterialStateProperty.resolveWith((states) {
+          if (!states.contains(MaterialState.selected)) {
+            return AppColors.supportOverlayLight;
+          }
+        }),
+      ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: AppColors.blueLight,
       ),

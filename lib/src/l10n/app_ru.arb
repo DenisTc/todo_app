@@ -9,5 +9,6 @@
     "taskFormFieldPlaceholder": "Что надо сделать…",
     "basicImportanceEnum": "Нет",
     "lowImportanceEnum":"Низкий",
-    "importantImportanceEnum": "Высокий"
+    "importantImportanceEnum": "Высокий",
+    "ready":"ГОТОВО"
 }

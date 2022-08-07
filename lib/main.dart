@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/src/data/api/api.dart';
 import 'package:todo_app/src/data/datasource/remote/remote_datasource_impl.dart';
 import 'package:todo_app/src/data/services/firebase/remote_config_service.dart';
@@ -10,12 +11,23 @@ Future<void> main() async {
   await Firebase.initializeApp();
   RemoteConfigService.instance.initRemoteConfig();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-  runApp(const App());
+  runApp(
+    App(
+      sharedPreferences: sharedPreferences,
+    ),
+  );
 }
 
 class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
+  final SharedPreferences _sharedPreferences;
+
+  const App({
+    Key? key,
+    required SharedPreferences sharedPreferences,
+  })  : _sharedPreferences = sharedPreferences,
+        super(key: key);
 
   @override
   State<App> createState() => _AppState();
@@ -36,7 +48,11 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
 
-    _localDatasource = LocalDataSourceImpl(boxTasks: _boxTasks);
+    _localDatasource = LocalDataSourceImpl(
+      boxTasks: _boxTasks,
+      sharedPreferences: widget._sharedPreferences,
+    );
+
     _remouteDatasource = RemoteDatasourceImpl(_api);
 
     _appRepository = AppRepositoryImpl(

@@ -1,3 +1,4 @@
+import 'package:todo_app/src/core/constants/app_colors.dart';
 import 'package:todo_app/src/imports.dart';
 
 class TaskListScreen extends StatefulWidget {
@@ -27,7 +28,10 @@ class _TaskListScreenState extends State<TaskListScreen> {
         onPressed: () => context
             .read<NavigationController>()
             .navigateTo(RouteConstant.addTask),
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
       body: SafeArea(
         bottom: false,
@@ -215,7 +219,12 @@ class _ListTasksState extends State<_ListTasks> {
 
     return ClipRRect(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(
+          left: 8,
+          top: 8,
+          right: 8,
+          bottom: 80,
+        ),
         child: Card(
           child: Column(
             children: [
@@ -226,6 +235,8 @@ class _ListTasksState extends State<_ListTasks> {
                 itemCount: box.length,
                 itemBuilder: (_, i) {
                   final task = box[i];
+                  final isImportant =
+                      task.importance == ImportanceTypeEnum.important.name;
                   String? deadline;
 
                   if (task.deadline != null) {
@@ -284,24 +295,34 @@ class _ListTasksState extends State<_ListTasks> {
                                 child: SizedBox(
                                   height: 18,
                                   width: 18,
-                                  child: Checkbox(
-                                    value: task.done,
-                                    activeColor: customColors.green,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(2.0),
+                                  child: Container(
+                                    color: isImportant && !task.done
+                                        ? Theme.of(context)
+                                            .errorColor
+                                            .withOpacity(.16)
+                                        : Colors.transparent,
+                                    child: Checkbox(
+                                      value: task.done,
+                                      activeColor: customColors.green,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(2.0),
+                                      ),
+                                      side: MaterialStateBorderSide.resolveWith(
+                                        (states) => BorderSide(
+                                          width: 2.0,
+                                          color: _getBorderColor(
+                                            status: task.done,
+                                            isImportant: isImportant,
+                                          ),
+                                          // color: isImpartance
+                                          //     ? customColors.red!
+                                          //     : AppColors.labelTertiaryLight,
+                                        ),
+                                      ),
+                                      onChanged: (_) => taskBloc
+                                          .add(TaskEvent.completeTask(task)),
                                     ),
-                                    // side: MaterialStateBorderSide.resolveWith(
-                                    //   (states) => BorderSide(
-                                    //     width: 2.0,
-                                    //     color: task.importance ==
-                                    //             ImportanceTypeEnum
-                                    //                 .important.name
-                                    //         ? customColors.red!
-                                    //         : AppColors.labelTertiaryLight,
-                                    //   ),
-                                    // ),
-                                    onChanged: (_) => taskBloc
-                                        .add(TaskEvent.completeTask(task)),
                                   ),
                                 ),
                               ),
@@ -312,9 +333,9 @@ class _ListTasksState extends State<_ListTasks> {
                               onTap: () => context
                                   .read<NavigationController>()
                                   .navigateTo(
-                                    RouteConstant.addTask,
-                                    arguments: task,
-                                  ),
+                                RouteConstant.addTask,
+                                arguments: {'task': task},
+                              ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -385,7 +406,7 @@ class _ListTasksState extends State<_ListTasks> {
                 },
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.only(right: 8),
                 height: 48,
                 child: Container(
                   color: Colors.white,
@@ -393,9 +414,20 @@ class _ListTasksState extends State<_ListTasks> {
                   child: Row(
                     children: [
                       const SizedBox(width: 67),
-                      Text(
-                        appLocalizations.addNewTask,
-                        style: Theme.of(context).textTheme.bodyText2,
+                      Expanded(
+                        child: TextFormField(
+                          onFieldSubmitted: (value) =>
+                              context.read<NavigationController>().navigateTo(
+                            RouteConstant.addTask,
+                            arguments: {'text': value},
+                          ),
+                          style: Theme.of(context).textTheme.bodyText1,
+                          decoration: InputDecoration(
+                            hintText: appLocalizations.addNewTask,
+                            hintStyle: Theme.of(context).textTheme.bodyText2,
+                            border: InputBorder.none,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -406,6 +438,18 @@ class _ListTasksState extends State<_ListTasks> {
         ),
       ),
     );
+  }
+
+  Color _getBorderColor({required bool status, required bool isImportant}) {
+    if (!status) {
+      if (isImportant) {
+        return Theme.of(context).errorColor;
+      } else {
+        return AppColors.labelTertiaryLight;
+      }
+    }
+
+    return Colors.transparent;
   }
 
   Widget _getImportanceIcon(String importance) {
