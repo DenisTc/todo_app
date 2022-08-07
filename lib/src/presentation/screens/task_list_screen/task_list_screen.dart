@@ -295,8 +295,10 @@ class _ListTasksState extends State<_ListTasks> {
                           Column(
                             children: [
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 4, right: 15),
+                                padding: const EdgeInsets.only(
+                                  top: 3,
+                                  right: 15,
+                                ),
                                 child: SizedBox(
                                   height: 18,
                                   width: 18,
@@ -343,7 +345,7 @@ class _ListTasksState extends State<_ListTasks> {
                                 children: [
                                   Row(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Visibility(
                                         visible: task.importance !=
