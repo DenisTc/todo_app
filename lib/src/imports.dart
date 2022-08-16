@@ -1,3 +1,4 @@
+export 'dart:async';
 export 'package:flutter/material.dart';
 export 'package:intl/intl.dart' hide TextDirection;
 export 'package:todo_app/src/l10n/l10n.dart';
@@ -13,6 +14,7 @@ export 'package:freezed_annotation/freezed_annotation.dart';
 export 'package:todo_app/src/data/storage/hive_db.dart';
 export 'package:dio/dio.dart';
 export 'package:flutter_dotenv/flutter_dotenv.dart';
+export 'package:shake/shake.dart';
 
 export 'package:todo_app/src/presentation/routes/controller.dart';
 export 'package:todo_app/src/presentation/routes/routes.dart';

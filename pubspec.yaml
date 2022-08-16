@@ -28,6 +28,7 @@ dependencies:
   platform_device_id: ^1.0.1
   flutter_dotenv: ^5.0.2
   flutter_native_splash: ^2.2.7
+  shake: ^2.1.0
 
   # Logs
   logger: ^1.1.0

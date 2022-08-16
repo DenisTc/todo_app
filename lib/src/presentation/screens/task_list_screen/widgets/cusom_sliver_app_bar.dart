@@ -63,20 +63,18 @@ class CusomSliverAppBar extends StatelessWidget {
                         : Theme.of(context).textTheme.headline2,
                   ),
                   const Spacer(),
-                  Material(
-                    child: Visibility(
-                      visible: !isCollapsed,
-                      child: GestureDetector(
-                        onTap: () {
-                          showColpletedTask();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 16.0),
-                          child: SvgPicture.asset(
-                            AppIcons.visibilityOn,
-                            width: 23,
-                            height: 15,
-                          ),
+                  Visibility(
+                    visible: !isCollapsed,
+                    child: GestureDetector(
+                      onTap: () {
+                        showColpletedTask();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: SvgPicture.asset(
+                          AppIcons.visibilityOn,
+                          width: 23,
+                          height: 15,
                         ),
                       ),
                     ),
@@ -94,16 +92,21 @@ class CusomSliverAppBar extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                       const Spacer(),
-                      IconButton(
-                        onPressed: () {
+                      GestureDetector(
+                        onTap: () {
                           showColpletedTask();
                         },
-                        icon: SvgPicture.asset(
-                          !isShowColpletedTask
-                              ? AppIcons.visibilityOn
-                              : AppIcons.visibilityOff,
-                          width: 23,
-                          height: 15,
+                        child: SizedBox(
+                          width: 48,
+                          height: 48,
+                          child: SvgPicture.asset(
+                            !isShowColpletedTask
+                                ? AppIcons.visibilityOn
+                                : AppIcons.visibilityOff,
+                            width: 23,
+                            height: 15,
+                            fit: BoxFit.scaleDown,
+                          ),
                         ),
                       ),
                     ],

@@ -41,59 +41,45 @@ class _DropdownImportanceLevelState extends State<DropdownImportanceLevel> {
             widget.appLocalizations.importance,
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          SizedBox(
-            width: 200,
-            child: ButtonTheme(
-              // alignedDropdown: true,
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<ImportanceTypeEnum>(
-                  isExpanded: true,
-                  iconSize: 0.0,
-                  value: widget.dropdownValue,
-                  icon: const Icon(Icons.keyboard_arrow_down),
-                  style: _getTextStyleBtn(dropdownValue),
-                  selectedItemBuilder: (context) {
-                    return ImportanceTypeEnum.values.map(
-                      (ImportanceTypeEnum type) {
-                        return Container(
-                          padding: const EdgeInsets.all(0)
-                              .resolve(Directionality.of(context)),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              _getImportanceTitle(
-                                appLocalizations: widget.appLocalizations,
-                                title: type,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ).toList();
-                  },
-                  items: ImportanceTypeEnum.values.map(
-                    (ImportanceTypeEnum type) {
-                      return DropdownMenuItem<ImportanceTypeEnum>(
-                        value: type,
-                        child: Text(
-                          _getImportanceTitle(
-                            appLocalizations: widget.appLocalizations,
-                            title: type,
-                          ),
-                          style: _getTextStyleInList(type),
-                        ),
-                      );
-                    },
-                  ).toList(),
-                  onChanged: (ImportanceTypeEnum? newValue) {
-                    if (newValue != null) {
-                      setState(() => dropdownValue = newValue);
-                      widget.callback(dropdownValue);
-                    }
-                  },
+          PopupMenuButton<ImportanceTypeEnum>(
+            initialValue: dropdownValue,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 16),
+              child: Text(
+                _getImportanceTitle(
+                  appLocalizations: widget.appLocalizations,
+                  title: dropdownValue,
                 ),
+                style: _getTextStyleBtn(dropdownValue),
               ),
             ),
+            onSelected: (ImportanceTypeEnum? newValue) {
+              if (newValue != null) {
+                setState(() => dropdownValue = newValue);
+                widget.callback(dropdownValue);
+              }
+            },
+            itemBuilder: (context) => ImportanceTypeEnum.values.map(
+              (ImportanceTypeEnum type) {
+                return PopupMenuItem<ImportanceTypeEnum>(
+                  value: type,
+                  child: Container(
+                    padding: const EdgeInsets.all(0)
+                        .resolve(Directionality.of(context)),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        _getImportanceTitle(
+                          appLocalizations: widget.appLocalizations,
+                          title: type,
+                        ),
+                        style: _getTextStyleInList(type),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ).toList(),
           ),
           const Divider(
             height: 1,

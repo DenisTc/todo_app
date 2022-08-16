@@ -1,4 +1,3 @@
-import 'package:todo_app/src/core/constants/app_colors.dart';
 import 'package:todo_app/src/imports.dart';
 
 class ListTasks extends StatefulWidget {
@@ -114,7 +113,7 @@ class _ListTasksState extends State<ListTasks> {
                                         child: SizedBox(
                                           height: 18,
                                           width: 18,
-                                          child: Container(
+                                          child: ColoredBox(
                                             color: isImportant && !task.done
                                                 ? Theme.of(context)
                                                     .primaryColor
@@ -201,6 +200,9 @@ class _ListTasksState extends State<ListTasks> {
                                                 ),
                                                 child: SvgPicture.asset(
                                                   AppIcons.infoOutline,
+                                                  color: Theme.of(context)
+                                                      .iconTheme
+                                                      .color,
                                                   width: 20,
                                                   height: 20,
                                                 ),
@@ -274,7 +276,7 @@ class _ListTasksState extends State<ListTasks> {
       if (isImportant) {
         return Theme.of(context).primaryColor;
       } else {
-        return AppColors.labelTertiaryLight;
+        return Theme.of(context).checkboxTheme.side!.color;
       }
     }
 

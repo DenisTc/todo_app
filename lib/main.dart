@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/src/data/api/api.dart';
 import 'package:todo_app/src/data/datasource/remote/remote_datasource_impl.dart';
@@ -46,32 +45,27 @@ class _AppState extends State<App> {
   final _api = Api();
   final _navigationController = NavigationController();
   final _routeObserver = RouteObserver();
-  late LocalDataSourceImpl _localDatasource;
-  late RemoteDatasourceImpl _remouteDatasource;
+
   late AppRepositoryImpl _appRepository;
+
   ThemeData currentTheme = AppTheme.lightTheme;
+  bool isLightTheme = false;
   Color? primaryColor;
 
   @override
   void initState() {
     super.initState();
 
-    _localDatasource = LocalDataSourceImpl(
-      boxTasks: _boxTasks,
-      sharedPreferences: widget._sharedPreferences,
-    );
-
-    _remouteDatasource = RemoteDatasourceImpl(_api);
-
     _appRepository = AppRepositoryImpl(
-      localDatasource: _localDatasource,
-      remoteDatasource: _remouteDatasource,
+      localDatasource: LocalDataSourceImpl(
+        boxTasks: _boxTasks,
+        sharedPreferences: widget._sharedPreferences,
+      ),
+      remoteDatasource: RemoteDatasourceImpl(_api),
     );
 
-    final codeColor = RemoteConfigService.instance.getPrimaryColor();
-    if (codeColor != null) {
-      primaryColor = Color(codeColor);
-    }
+    initPrimaryColor();
+    initShakeDetector();
   }
 
   @override
@@ -105,6 +99,31 @@ class _AppState extends State<App> {
         debugShowCheckedModeBanner: false,
         home: const TaskListScreen(),
       ),
+    );
+  }
+
+  void initPrimaryColor() {
+    final codeColor = RemoteConfigService.instance.getPrimaryColor();
+
+    if (codeColor != null) {
+      primaryColor = Color(codeColor);
+    }
+  }
+
+  void initShakeDetector() {
+    ShakeDetector.autoStart(
+      onPhoneShake: () {
+        setState(
+          () {
+            isLightTheme = !isLightTheme;
+            if (isLightTheme) {
+              currentTheme = AppTheme.lightTheme;
+            } else {
+              currentTheme = AppTheme.darkTheme;
+            }
+          },
+        );
+      },
     );
   }
 }
