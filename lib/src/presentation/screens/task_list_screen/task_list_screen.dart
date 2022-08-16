@@ -134,7 +134,9 @@ class CusomSliverAppBar extends StatelessWidget {
                     appLocalizations.myTasks,
                     style: isCollapsed
                         ? Theme.of(context).textTheme.headline1!.copyWith(
-                            fontSize: 20 + (12 * percentage), height: 1.6)
+                              fontSize: 20 + (12 * percentage),
+                              height: 1.6,
+                            )
                         : Theme.of(context).textTheme.headline2,
                   ),
                   const Spacer(),

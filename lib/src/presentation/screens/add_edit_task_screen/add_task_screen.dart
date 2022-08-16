@@ -31,14 +31,16 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     dropdownValue = ImportanceTypeEnum.values.firstWhere(
       (element) => element.name == widget.task?.importance,
       orElse: () => ImportanceTypeEnum.basic,
     );
 
-    selectedDate = widget.task?.deadline != null
-        ? DateTime.fromMillisecondsSinceEpoch(widget.task!.deadline!)
-        : null;
+    if (widget.task != null && widget.task!.deadline != null) {
+      selectedDate =
+          DateTime.fromMillisecondsSinceEpoch(widget.task!.deadline!);
+    }
   }
 
   @override
