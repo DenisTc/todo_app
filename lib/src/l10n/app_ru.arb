@@ -1,0 +1,14 @@
+{
+    "myTasks": "Мои дела",
+    "save": "СОХРАНИТЬ",
+    "importance":"Важность",
+    "makeUpTo":"Сделать до",
+    "delete": "Удалить",
+    "done":"Выполнено",
+    "addNewTask": "Новое",
+    "taskFormFieldPlaceholder": "Что надо сделать…",
+    "basicImportanceEnum": "Нет",
+    "lowImportanceEnum":"Низкий",
+    "importantImportanceEnum": "Высокий",
+    "ready":"ГОТОВО"
+}
