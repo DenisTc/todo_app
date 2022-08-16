@@ -1,4 +1,5 @@
 import 'package:todo_app/src/core/constants/app_colors.dart';
+import 'package:todo_app/src/core/constants/app_nums.dart';
 import 'package:todo_app/src/imports.dart';
 
 class TaskListScreen extends StatefulWidget {
@@ -13,9 +14,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
   final _snap = false;
   final _floating = false;
 
-  final appBarHeight = 170.0;
-  double minAppbarPadding = 16.0;
-  double minAppbarBottomPadding = 12.0;
+  final _appBarHeight = AppNums.appBarHeight;
+  final _minAppbarPadding = AppNums.minAppbarPadding;
+  final _minAppbarBottomPadding = AppNums.minAppbarBottomPadding;
 
   bool isShowColpletedTask = false;
 
@@ -46,9 +47,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
                     pinned: _pinned,
                     snap: _snap,
                     floating: _floating,
-                    appBarHeight: appBarHeight,
-                    minAppbarPadding: minAppbarPadding,
-                    minAppbarBottomPadding: minAppbarBottomPadding,
+                    appBarHeight: _appBarHeight,
+                    minAppbarPadding: _minAppbarPadding,
+                    minAppbarBottomPadding: _minAppbarBottomPadding,
                     countCompletedTask: countCompletedTask,
                     isShowColpletedTask: isShowColpletedTask,
                     showColpletedTask: () => showColpletedTask(),
