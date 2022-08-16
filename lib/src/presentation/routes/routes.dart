@@ -20,8 +20,8 @@ class Routes {
               leading: const BackButton(color: Colors.grey),
               backgroundColor: Colors.white,
             ),
-            body: const Center(
-              child: Text('You Shall Not Pass!'),
+            body: Center(
+              child: Text(AppLocalizations.of(context)!.sreenNotFound),
             ),
           ),
         );

@@ -82,7 +82,7 @@ class _AppState extends State<App> {
         ),
       ],
       child: MaterialApp(
-        title: 'Done',
+        title: Environment.appName,
         navigatorKey: _navigationController.key,
         onGenerateRoute: Routes.generateRoute,
         initialRoute: RouteConstant.main,

@@ -10,5 +10,6 @@
     "basicImportanceEnum": "Нет",
     "lowImportanceEnum":"Низкий",
     "importantImportanceEnum": "Высокий",
-    "ready":"ГОТОВО"
+    "ready": "ГОТОВО",
+    "sreenNotFound": "You Shall Not Pass!"
 }
