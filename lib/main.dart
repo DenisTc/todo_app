@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/src/data/api/api.dart';
 import 'package:todo_app/src/data/datasource/remote/remote_datasource_impl.dart';
@@ -5,18 +6,25 @@ import 'package:todo_app/src/data/services/firebase/remote_config_service.dart';
 import 'package:todo_app/src/imports.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: Environment.fileName);
-  await HiveDB.initialize();
-  await Firebase.initializeApp();
-  RemoteConfigService.instance.initRemoteConfig();
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  runZonedGuarded<Future<void>>(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await dotenv.load(fileName: Environment.fileName);
+      await HiveDB.initialize();
+      await Firebase.initializeApp();
+      RemoteConfigService.instance.initRemoteConfig();
+      FlutterError.onError =
+          FirebaseCrashlytics.instance.recordFlutterFatalError;
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
 
-  runApp(
-    App(
-      sharedPreferences: sharedPreferences,
-    ),
+      runApp(
+        App(
+          sharedPreferences: sharedPreferences,
+        ),
+      );
+    },
+    (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack),
   );
 }
 
