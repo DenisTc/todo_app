@@ -1,4 +1,5 @@
 import 'package:todo_app/src/data/api/interceptors/auth_interceptor.dart';
+import 'package:todo_app/src/data/api/interceptors/error_interceptor.dart';
 import 'package:todo_app/src/data/api/interceptors/request_interceptor.dart';
 import 'package:todo_app/src/imports.dart';
 
@@ -30,6 +31,7 @@ class Api {
         [
           AuthInterceptor(),
           RequestInterceptor(),
+          ErrorInterceptor(),
         ],
       );
   }
