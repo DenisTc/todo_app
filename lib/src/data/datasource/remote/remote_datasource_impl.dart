@@ -1,6 +1,7 @@
 import 'package:todo_app/src/data/api/api.dart';
 import 'package:todo_app/src/data/api/api_routes.dart';
 import 'package:todo_app/src/data/datasource/remote/remote_datasource.dart';
+import 'package:todo_app/src/data/services/firebase/analytics_service.dart';
 import 'package:todo_app/src/domain/entities/all_tasks_response/all_tasks_response_entity.dart';
 import 'package:todo_app/src/domain/entities/task_response/task_response_entity.dart';
 import 'package:todo_app/src/imports.dart';
@@ -15,6 +16,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
     try {
       final response = await _api.client.get(ApiRoutes.list);
 
+      AnalyticsService().setLogEvent('get_all_tasks');
       return AllTasksResponseEntity.fromJson(response.data);
     } catch (e) {
       return const AllTasksResponseEntity(status: 'error');
@@ -36,6 +38,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
         options: options,
       );
 
+      AnalyticsService().setLogEvent('add_task');
       return TaskResponseEntity.fromJson(response.data);
     } catch (e) {
       return const TaskResponseEntity(status: 'error');
@@ -53,6 +56,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
       final response =
           await _api.client.delete('${ApiRoutes.list}/$id', options: options);
 
+      AnalyticsService().setLogEvent('delete_task');
       return TaskResponseEntity.fromJson(response.data);
     } catch (e) {
       return const TaskResponseEntity(status: 'error');
@@ -74,6 +78,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
         options: options,
       );
 
+      AnalyticsService().setLogEvent('update_task');
       return TaskResponseEntity.fromJson(response.data);
     } catch (e) {
       return const TaskResponseEntity(status: 'error');
@@ -95,6 +100,8 @@ class RemoteDatasourceImpl implements RemoteDatasource {
         data: data,
         options: options,
       );
+
+      AnalyticsService().setLogEvent('update_all_tasks');
       return AllTasksResponseEntity.fromJson(response.data);
     } catch (e) {
       return const AllTasksResponseEntity(status: 'error');
