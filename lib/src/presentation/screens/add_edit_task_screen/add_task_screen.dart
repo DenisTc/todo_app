@@ -57,7 +57,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             elevation: Theme.of(context).appBarTheme.elevation,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             leading: GestureDetector(
-              onTap: () => context.read<NavigationController>().pop(),
+              onTap: () => Navigator.of(context).pop(),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SvgPicture.asset(
@@ -95,7 +95,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       context.read<TaskBloc>().add(TaskEvent.addTask(task));
                     }
 
-                    context.read<NavigationController>().pop();
+                    Navigator.of(context).pop();
                   },
                   child: Text(
                     appLocalizations.save,
@@ -214,8 +214,7 @@ class _DeleteTaskButton extends StatelessWidget {
           ? null
           : () {
               context.read<TaskBloc>().add(TaskEvent.deleteTask(widget.task!));
-
-              context.read<NavigationController>().pop();
+              Navigator.of(context).pop();
             },
       child: Padding(
         padding: const EdgeInsets.all(16.0),

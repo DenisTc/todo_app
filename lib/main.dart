@@ -6,6 +6,8 @@ import 'package:todo_app/src/data/datasource/remote/remote_datasource_impl.dart'
 import 'package:todo_app/src/data/services/firebase/analytics_service.dart';
 import 'package:todo_app/src/data/services/firebase/remote_config_service.dart';
 import 'package:todo_app/src/imports.dart';
+import 'package:todo_app/src/presentation/router/app_router.dart';
+import 'package:todo_app/src/presentation/router/model/app_state_manager.dart';
 
 Future<void> main() async {
   runZonedGuarded<Future<void>>(
@@ -49,11 +51,11 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  final _appStateManager = AppStateManager();
   final _boxTasks = Hive.box<TaskModel>('tasks');
   final _api = Api();
-  final _navigationController = NavigationController();
-  final _routeObserver = RouteObserver();
 
+  late AppRouter _appRouter;
   late AppRepositoryImpl _appRepository;
   late FirebaseAnalyticsObserver observer;
 
@@ -65,6 +67,10 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     observer = widget._analyticsService.getAnalyticsObserver();
+
+    _appRouter = AppRouter(
+      appStateManager: _appStateManager,
+    );
 
     _appRepository = AppRepositoryImpl(
       localDatasource: LocalDataSourceImpl(
@@ -82,11 +88,8 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<NavigationController>.value(
-          value: _navigationController,
-          child: Provider<RouteObserver>.value(
-            value: _routeObserver,
-          ),
+        ChangeNotifierProvider(
+          create: (context) => _appStateManager,
         ),
         BlocProvider(
           create: (context) =>
@@ -95,10 +98,6 @@ class _AppState extends State<App> {
       ],
       child: MaterialApp(
         title: Environment.appName,
-        navigatorKey: _navigationController.key,
-        navigatorObservers: <NavigatorObserver>[observer],
-        onGenerateRoute: Routes.generateRoute,
-        initialRoute: RouteConstant.main,
         theme: currentTheme.copyWith(primaryColor: primaryColor),
         supportedLocales: L10n.all,
         localizationsDelegates: const [
@@ -108,7 +107,7 @@ class _AppState extends State<App> {
           GlobalCupertinoLocalizations.delegate,
         ],
         debugShowCheckedModeBanner: false,
-        home: const TaskListScreen(),
+        home: Router(routerDelegate: _appRouter),
       ),
     );
   }

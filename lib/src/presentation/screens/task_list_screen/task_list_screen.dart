@@ -1,5 +1,6 @@
 import 'package:todo_app/src/core/constants/app_nums.dart';
 import 'package:todo_app/src/imports.dart';
+import 'package:todo_app/src/presentation/router/model/app_state_manager.dart';
 import 'package:todo_app/src/presentation/screens/task_list_screen/widgets/cusom_sliver_app_bar.dart';
 import 'package:todo_app/src/presentation/screens/task_list_screen/widgets/list_tasks.dart';
 
@@ -23,13 +24,12 @@ class _TaskListScreenState extends State<TaskListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final navController = Provider.of<AppStateManager>(context);
     final box = Hive.box<TaskModel>('tasks');
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context
-            .read<NavigationController>()
-            .navigateTo(RouteConstant.addTask),
+        onPressed: () => navController.addNewTask(''),
         child: const Icon(
           Icons.add,
           color: Colors.white,

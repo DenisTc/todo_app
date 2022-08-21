@@ -16,9 +16,6 @@ export 'package:dio/dio.dart';
 export 'package:flutter_dotenv/flutter_dotenv.dart';
 export 'package:shake/shake.dart';
 
-export 'package:todo_app/src/presentation/routes/controller.dart';
-export 'package:todo_app/src/presentation/routes/routes.dart';
-export 'package:todo_app/src/presentation/routes/route_constants.dart';
 export 'package:todo_app/src/presentation/screens/screens.dart';
 export 'package:todo_app/src/core/theme/app_theme.dart';
 export 'package:todo_app/src/core/constants/app_icons.dart';

@@ -1,4 +1,5 @@
 import 'package:todo_app/src/imports.dart';
+import 'package:todo_app/src/presentation/router/model/app_state_manager.dart';
 
 class ListTasks extends StatefulWidget {
   final Box<TaskModel> box;
@@ -16,6 +17,7 @@ class ListTasks extends StatefulWidget {
 class _ListTasksState extends State<ListTasks> {
   @override
   Widget build(BuildContext context) {
+    final navController = Provider.of<AppStateManager>(context);
     final taskBloc = BlocProvider.of<TaskBloc>(context);
     final appLocalizations = AppLocalizations.of(context)!;
     final customColors = Theme.of(context).extension<CustomColors>()!;
@@ -146,12 +148,7 @@ class _ListTasksState extends State<ListTasks> {
                                   ),
                                   Expanded(
                                     child: GestureDetector(
-                                      onTap: () => context
-                                          .read<NavigationController>()
-                                          .navigateTo(
-                                        RouteConstant.addTask,
-                                        arguments: {'task': task},
-                                      ),
+                                      onTap: () => navController.goToTask(task),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -240,12 +237,7 @@ class _ListTasksState extends State<ListTasks> {
                               child: TextFormField(
                                 controller: textController,
                                 onFieldSubmitted: (value) {
-                                  context
-                                      .read<NavigationController>()
-                                      .navigateTo(
-                                    RouteConstant.addTask,
-                                    arguments: {'text': value},
-                                  );
+                                  navController.addNewTask(value);
                                   textController.clear();
                                 },
                                 style: Theme.of(context).textTheme.bodyText1,
