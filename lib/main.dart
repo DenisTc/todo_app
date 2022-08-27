@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/src/data/api/api.dart';
@@ -8,6 +9,7 @@ import 'package:todo_app/src/data/services/firebase/remote_config_service.dart';
 import 'package:todo_app/src/imports.dart';
 import 'package:todo_app/src/presentation/router/app_router.dart';
 import 'package:todo_app/src/presentation/router/model/app_state_manager.dart';
+import 'package:uni_links/uni_links.dart';
 
 Future<void> main() async {
   runZonedGuarded<Future<void>>(
@@ -58,6 +60,7 @@ class _AppState extends State<App> {
   late AppRouter _appRouter;
   late AppRepositoryImpl _appRepository;
   late FirebaseAnalyticsObserver observer;
+  late StreamSubscription _linkSubscription;
 
   ThemeData currentTheme = AppTheme.lightTheme;
   bool isLightTheme = false;
@@ -82,6 +85,14 @@ class _AppState extends State<App> {
 
     initPrimaryColor();
     initShakeDetector();
+
+    initUniLinks();
+  }
+
+  @override
+  void dispose() {
+    _linkSubscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -138,6 +149,25 @@ class _AppState extends State<App> {
       );
     } catch (e) {
       Logger().e(e);
+    }
+  }
+
+  Future<void> initUniLinks() async {
+    try {
+      Uri? initialLink = await getInitialUri();
+      if (initialLink != null) {
+        if (!mounted) return;
+        _appRouter.parseRoute(initialLink);
+      }
+
+      _linkSubscription = uriLinkStream.listen((uri) {
+        if (uri != null) {
+          if (!mounted) return;
+          _appRouter.parseRoute(uri);
+        }
+      }, onError: (error) => error.printError());
+    } on PlatformException {
+      Logger().e('Platfrom exception unilink');
     }
   }
 }

@@ -57,4 +57,12 @@ class AppRouter extends RouterDelegate
 
   @override
   Future<void> setNewRoutePath(configuration) async {}
+
+  void parseRoute(Uri uri) {
+    if (uri.pathSegments.isNotEmpty) {
+      if (uri.path == '/addNewTask') {
+        _appStateManager.addNewTask('');
+      }
+    }
+  }
 }
