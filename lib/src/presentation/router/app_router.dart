@@ -1,3 +1,4 @@
+import 'package:todo_app/src/core/constants/app_deeplinks.dart';
 import 'package:todo_app/src/imports.dart';
 import 'package:todo_app/src/presentation/router/model/app_state_manager.dart';
 
@@ -60,7 +61,7 @@ class AppRouter extends RouterDelegate
 
   void parseRoute(Uri uri) {
     if (uri.pathSegments.isNotEmpty) {
-      if (uri.path == '/addNewTask') {
+      if (uri.path == AppDeepLinks.addNewTask) {
         _appStateManager.addNewTask('');
       }
     }
