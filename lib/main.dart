@@ -7,6 +7,8 @@ import 'package:todo_app/src/data/datasource/remote/remote_datasource_impl.dart'
 import 'package:todo_app/src/data/services/firebase/analytics_service.dart';
 import 'package:todo_app/src/data/services/firebase/remote_config_service.dart';
 import 'package:todo_app/src/imports.dart';
+import 'package:todo_app/src/presentation/cubit/list_task/list_task_cubit.dart';
+import 'package:todo_app/src/presentation/cubit/task/task_cubit.dart';
 import 'package:todo_app/src/presentation/router/app_router.dart';
 import 'package:todo_app/src/presentation/router/model/app_state_manager.dart';
 import 'package:uni_links/uni_links.dart';
@@ -103,8 +105,10 @@ class _AppState extends State<App> {
           create: (context) => _appStateManager,
         ),
         BlocProvider(
-          create: (context) =>
-              TaskBloc(_appRepository)..add(const TaskEvent.loadAllTasks()),
+          create: (context) => ListTaskCubit(_appRepository)..loadListTask(),
+        ),
+        BlocProvider(
+          create: (context) => TaskCubit(_appRepository),
         ),
       ],
       child: MaterialApp(

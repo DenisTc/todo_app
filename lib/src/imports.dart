@@ -22,7 +22,6 @@ export 'package:todo_app/src/core/constants/app_icons.dart';
 export 'package:todo_app/src/core/extensions/custom_colors.dart';
 export 'package:todo_app/src/data/datasource/local/models/task_model.dart';
 export 'package:todo_app/src/core/enums/importance_type_enum.dart';
-export 'package:todo_app/src/presentation/bloc/task/task_bloc.dart';
 export 'package:todo_app/src/core/environments/environment.dart';
 
 // Data

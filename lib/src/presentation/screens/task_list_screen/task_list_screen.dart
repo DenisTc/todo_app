@@ -1,5 +1,7 @@
 import 'package:todo_app/src/core/constants/app_nums.dart';
 import 'package:todo_app/src/imports.dart';
+import 'package:todo_app/src/presentation/cubit/list_task/list_task_cubit.dart';
+import 'package:todo_app/src/presentation/cubit/task/task_cubit.dart';
 import 'package:todo_app/src/presentation/router/model/app_state_manager.dart';
 import 'package:todo_app/src/presentation/screens/task_list_screen/widgets/cusom_sliver_app_bar.dart';
 import 'package:todo_app/src/presentation/screens/task_list_screen/widgets/list_tasks.dart';
@@ -21,11 +23,12 @@ class _TaskListScreenState extends State<TaskListScreen> {
   final _minAppbarBottomPadding = AppNums.minAppbarBottomPadding;
 
   bool isShowColpletedTask = false;
+  List<TaskModel> tasks = [];
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
     final navController = Provider.of<AppStateManager>(context);
-    final box = Hive.box<TaskModel>('tasks');
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -37,12 +40,21 @@ class _TaskListScreenState extends State<TaskListScreen> {
       ),
       body: SafeArea(
         bottom: false,
-        child: ValueListenableBuilder(
-          valueListenable: box.listenable(),
-          builder: (_, Box<TaskModel> box, __) {
-            final countCompletedTask =
-                box.values.where((task) => task.done).length;
-            return CustomScrollView(
+        child: BlocListener<TaskCubit, TaskState>(
+          listener: (context, state) => state.whenOrNull(
+            success: () =>
+                BlocProvider.of<ListTaskCubit>(context).loadListTask(),
+          ),
+          child: BlocListener<ListTaskCubit, ListTaskState>(
+            listener: (context, state) => state.whenOrNull(
+              loaded: (listTask, countCompletedTask) => setState(
+                () {
+                  tasks = listTask;
+                  count = countCompletedTask;
+                },
+              ),
+            ),
+            child: CustomScrollView(
               slivers: [
                 CusomSliverAppBar(
                   pinned: _pinned,
@@ -51,17 +63,17 @@ class _TaskListScreenState extends State<TaskListScreen> {
                   appBarHeight: _appBarHeight,
                   minAppbarPadding: _minAppbarPadding,
                   minAppbarBottomPadding: _minAppbarBottomPadding,
-                  countCompletedTask: countCompletedTask,
+                  countCompletedTask: count,
                   isShowColpletedTask: isShowColpletedTask,
                   showColpletedTask: () => showColpletedTask(),
                 ),
                 ListTasks(
-                  box: box,
+                  listTask: tasks,
                   isShowColpletedTask: isShowColpletedTask,
                 ),
               ],
-            );
-          },
+            ),
+          ),
         ),
       ),
     );

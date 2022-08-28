@@ -14,7 +14,7 @@ class AppRepositoryImpl extends AppRepository {
         _remoteDatasource = remoteDatasource;
 
   @override
-  Future<void> getAllTasks() async {
+  Future<List<TaskModel>> getAllTasks() async {
     final revision = await _localDatasource.getRevision();
     final hasOfflineData = await _localDatasource.getOfflineDataStatus();
 
@@ -28,6 +28,7 @@ class AppRepositoryImpl extends AppRepository {
 
         _localDatasource.addTasks(result.list!);
         _localDatasource.saveRevision(result.revision!);
+        return result.list!;
       }
 
       // Если ревизии равны, но на устройстве есть новые локальные данные, то
@@ -36,6 +37,8 @@ class AppRepositoryImpl extends AppRepository {
         updateAllTasks();
       }
     }
+
+    return _localDatasource.getAllTasks();
   }
 
   @override

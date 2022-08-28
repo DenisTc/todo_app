@@ -1,4 +1,6 @@
 import 'package:todo_app/src/imports.dart';
+import 'package:todo_app/src/presentation/cubit/task/model/task_cubit_model.dart';
+import 'package:todo_app/src/presentation/cubit/task/task_cubit.dart';
 import 'package:todo_app/src/presentation/screens/add_edit_task_screen/widgets/deadline_data_picker.dart';
 import 'package:todo_app/src/presentation/screens/add_edit_task_screen/widgets/dropdown_importance_level.dart';
 
@@ -73,26 +75,18 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               Visibility(
                 child: TextButton(
                   onPressed: () async {
-                    final id = widget.task?.id ?? const Uuid().v4();
-                    final createdAt = widget.task?.createdAt ??
-                        DateTime.now().millisecondsSinceEpoch;
-                    final deviceId = await PlatformDeviceId.getDeviceId;
-
-                    final task = TaskModel(
-                      id: id,
-                      text: _textController.text,
-                      importance: dropdownValue.name,
-                      deadline: selectedDate?.millisecondsSinceEpoch,
-                      createdAt: createdAt,
-                      changedAt: DateTime.now().millisecondsSinceEpoch,
-                      lastUpdatedBy: deviceId!,
-                    );
+                    final task = TaskCubitModel(
+                        id: widget.task?.id,
+                        text: _textController.text,
+                        importance: dropdownValue.name,
+                        deadline: selectedDate?.millisecondsSinceEpoch,
+                        createdAt: widget.task?.createdAt);
 
                     if (!mounted) return;
                     if (isEditMode) {
-                      context.read<TaskBloc>().add(TaskEvent.updateTask(task));
+                      context.read<TaskCubit>().updateTask(task);
                     } else {
-                      context.read<TaskBloc>().add(TaskEvent.addTask(task));
+                      context.read<TaskCubit>().addTask(task);
                     }
 
                     Navigator.of(context).pop();
@@ -213,7 +207,7 @@ class _DeleteTaskButton extends StatelessWidget {
       onTap: !isEditMode
           ? null
           : () {
-              context.read<TaskBloc>().add(TaskEvent.deleteTask(widget.task!));
+              context.read<TaskCubit>().deleteTask(widget.task!);
               Navigator.of(context).pop();
             },
       child: Padding(

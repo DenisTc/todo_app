@@ -1,12 +1,13 @@
 import 'package:todo_app/src/imports.dart';
+import 'package:todo_app/src/presentation/cubit/task/task_cubit.dart';
 import 'package:todo_app/src/presentation/router/model/app_state_manager.dart';
 
 class ListTasks extends StatefulWidget {
-  final Box<TaskModel> box;
+  final List<TaskModel> listTask;
   final bool isShowColpletedTask;
   const ListTasks({
     Key? key,
-    required this.box,
+    required this.listTask,
     required this.isShowColpletedTask,
   }) : super(key: key);
 
@@ -18,17 +19,17 @@ class _ListTasksState extends State<ListTasks> {
   @override
   Widget build(BuildContext context) {
     final navController = Provider.of<AppStateManager>(context);
-    final taskBloc = BlocProvider.of<TaskBloc>(context);
+    final taskCubit = BlocProvider.of<TaskCubit>(context);
     final appLocalizations = AppLocalizations.of(context)!;
     final customColors = Theme.of(context).extension<CustomColors>()!;
     final currentLocale = Localizations.localeOf(context).languageCode;
     final textController = TextEditingController();
-    List<TaskModel> box = [];
+    List<TaskModel> listTask = [];
 
     if (widget.isShowColpletedTask) {
-      box = widget.box.values.where((item) => !item.done).toList();
+      listTask = widget.listTask.where((item) => !item.done).toList();
     } else {
-      box = widget.box.values.toList();
+      listTask = widget.listTask;
     }
 
     return SliverList(
@@ -50,9 +51,9 @@ class _ListTasksState extends State<ListTasks> {
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         padding: const EdgeInsets.all(0),
-                        itemCount: box.length,
+                        itemCount: listTask.length,
                         itemBuilder: (_, i) {
-                          final task = box[i];
+                          final task = listTask[i];
                           final isImportant = task.importance ==
                               ImportanceTypeEnum.important.name;
                           String? deadline;
@@ -69,10 +70,10 @@ class _ListTasksState extends State<ListTasks> {
                             confirmDismiss: (direction) async {
                               switch (direction) {
                                 case DismissDirection.endToStart:
-                                  taskBloc.add(TaskEvent.deleteTask(task));
+                                  taskCubit.deleteTask(task);
                                   break;
                                 default:
-                                  taskBloc.add(TaskEvent.completeTask(task));
+                                  taskCubit.completeTask(task);
                                   break;
                               }
                               return null;
@@ -138,8 +139,8 @@ class _ListTasksState extends State<ListTasks> {
                                                   ),
                                                 ),
                                               ),
-                                              onChanged: (_) => taskBloc.add(
-                                                  TaskEvent.completeTask(task)),
+                                              onChanged: (_) =>
+                                                  taskCubit.completeTask(task),
                                             ),
                                           ),
                                         ),
