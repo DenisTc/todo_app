@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo_app/main.dart';
+import 'package:todo_app/main_dev.dart';
 import 'package:todo_app/src/data/services/firebase/analytics_service.dart';
 import 'package:todo_app/src/data/services/firebase/remote_config_service.dart';
 import 'package:todo_app/src/imports.dart';
