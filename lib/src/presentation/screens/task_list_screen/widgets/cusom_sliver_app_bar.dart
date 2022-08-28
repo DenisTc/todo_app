@@ -1,6 +1,7 @@
 import 'package:todo_app/src/imports.dart';
+import 'package:todo_app/src/presentation/screens/task_list_screen/widgets/toggle_completed_task_btn.dart';
 
-class CusomSliverAppBar extends StatelessWidget {
+class CusomSliverAppBar extends StatefulWidget {
   final bool _pinned;
   final bool _snap;
   final bool _floating;
@@ -28,28 +29,33 @@ class CusomSliverAppBar extends StatelessWidget {
         super(key: key);
 
   @override
+  State<CusomSliverAppBar> createState() => _CusomSliverAppBarState();
+}
+
+class _CusomSliverAppBarState extends State<CusomSliverAppBar> {
+  @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
 
     return SliverAppBar(
-      pinned: _pinned,
-      snap: _snap,
-      floating: _floating,
-      expandedHeight: appBarHeight,
+      pinned: widget._pinned,
+      snap: widget._snap,
+      floating: widget._floating,
+      expandedHeight: widget.appBarHeight,
       surfaceTintColor: Colors.transparent,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       flexibleSpace: LayoutBuilder(
         builder: (context, constraints) {
           final percentage = (constraints.maxHeight - kToolbarHeight) /
-              (appBarHeight - kToolbarHeight);
+              (widget.appBarHeight - kToolbarHeight);
           final isCollapsed = percentage != 0.0;
 
           return Center(
             child: FlexibleSpaceBar(
               centerTitle: false,
               titlePadding: EdgeInsetsDirectional.only(
-                start: minAppbarPadding + (44 * percentage),
-                bottom: minAppbarBottomPadding + (20 * percentage),
+                start: widget.minAppbarPadding + (44 * percentage),
+                bottom: widget.minAppbarBottomPadding + (20 * percentage),
               ),
               title: Row(
                 children: [
@@ -67,14 +73,15 @@ class CusomSliverAppBar extends StatelessWidget {
                     visible: !isCollapsed,
                     child: GestureDetector(
                       onTap: () {
-                        showColpletedTask();
+                        widget.showColpletedTask();
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(right: 16.0),
-                        child: SvgPicture.asset(
-                          AppIcons.visibilityOn,
-                          width: 23,
-                          height: 15,
+                        child: SizedBox(
+                          width: 24,
+                          child: ToggleCompletedTaskBtn(
+                            isShowColpletedTask: widget.isShowColpletedTask,
+                          ),
                         ),
                       ),
                     ),
@@ -88,24 +95,19 @@ class CusomSliverAppBar extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        '${appLocalizations.done} - $countCompletedTask',
+                        '${appLocalizations.done} - ${widget.countCompletedTask}',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                       const Spacer(),
                       GestureDetector(
                         onTap: () {
-                          showColpletedTask();
+                          widget.showColpletedTask();
                         },
                         child: SizedBox(
                           width: 48,
                           height: 48,
-                          child: SvgPicture.asset(
-                            !isShowColpletedTask
-                                ? AppIcons.visibilityOn
-                                : AppIcons.visibilityOff,
-                            width: 23,
-                            height: 15,
-                            fit: BoxFit.scaleDown,
+                          child: ToggleCompletedTaskBtn(
+                            isShowColpletedTask: widget.isShowColpletedTask,
                           ),
                         ),
                       ),
