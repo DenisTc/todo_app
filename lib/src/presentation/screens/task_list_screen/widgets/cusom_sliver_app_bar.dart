@@ -29,7 +29,7 @@ class CusomSliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final appLocalizations = AppLocalizations.of(context);
 
     return SliverAppBar(
       pinned: _pinned,
@@ -56,7 +56,7 @@ class CusomSliverAppBar extends StatelessWidget {
                   Text(
                     appLocalizations.myTasks,
                     style: isCollapsed
-                        ? Theme.of(context).textTheme.headline1!.copyWith(
+                        ? Theme.of(context).textTheme.headline1?.copyWith(
                               fontSize: 20 + (12 * percentage),
                               height: 1.6,
                             )

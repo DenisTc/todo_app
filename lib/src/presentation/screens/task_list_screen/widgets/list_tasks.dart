@@ -20,7 +20,7 @@ class _ListTasksState extends State<ListTasks> {
   Widget build(BuildContext context) {
     final navController = Provider.of<AppStateManager>(context);
     final taskCubit = BlocProvider.of<TaskCubit>(context);
-    final appLocalizations = AppLocalizations.of(context)!;
+    final appLocalizations = AppLocalizations.of(context);
     final customColors = Theme.of(context).extension<CustomColors>()!;
     final currentLocale = Localizations.localeOf(context).languageCode;
     final textController = TextEditingController();

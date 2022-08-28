@@ -48,7 +48,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     final isEditMode = widget.task != null;
-    final appLocalizations = AppLocalizations.of(context)!;
+    final appLocalizations = AppLocalizations.of(context);
 
     return Scaffold(
       body: CustomScrollView(
@@ -74,7 +74,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             actions: [
               Visibility(
                 child: TextButton(
-                  onPressed: () async {
+                  onPressed: () {
                     final task = TaskCubitModel(
                         id: widget.task?.id,
                         text: _textController.text,
@@ -82,7 +82,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         deadline: selectedDate?.millisecondsSinceEpoch,
                         createdAt: widget.task?.createdAt);
 
-                    if (!mounted) return;
                     if (isEditMode) {
                       context.read<TaskCubit>().updateTask(task);
                     } else {
@@ -223,7 +222,7 @@ class _DeleteTaskButton extends StatelessWidget {
             const SizedBox(width: 12),
             Text(
               appLocalizations.delete,
-              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+              style: Theme.of(context).textTheme.subtitle1?.copyWith(
                     color: !isEditMode
                         ? Theme.of(context).disabledColor
                         : Theme.of(context).errorColor,

@@ -160,13 +160,11 @@ class _AppState extends State<App> {
     try {
       Uri? initialLink = await getInitialUri();
       if (initialLink != null) {
-        if (!mounted) return;
         _appRouter.parseRoute(initialLink);
       }
 
       _linkSubscription = uriLinkStream.listen((uri) {
         if (uri != null) {
-          if (!mounted) return;
           _appRouter.parseRoute(uri);
         }
       }, onError: (error) => error.printError());
