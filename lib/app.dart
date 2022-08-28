@@ -1,5 +1,4 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/src/core/enums/flavor_type_enum.dart';
@@ -7,7 +6,6 @@ import 'package:todo_app/src/data/api/api.dart';
 import 'package:todo_app/src/data/datasource/remote/remote_datasource_impl.dart';
 import 'package:todo_app/src/data/services/firebase/analytics_service.dart';
 import 'package:todo_app/src/data/services/firebase/remote_config_service.dart';
-import 'package:todo_app/src/data/storage/box_names.dart';
 import 'package:todo_app/src/imports.dart';
 import 'package:todo_app/src/presentation/cubit/list_task/list_task_cubit.dart';
 import 'package:todo_app/src/presentation/cubit/task/task_cubit.dart';
@@ -35,7 +33,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final _appStateManager = AppStateManager();
-  final _boxTasks = Hive.box<TaskModel>(BoxNames.tasks);
+  final _boxTasks = HiveDB().getBoxTasks();
   final _api = Api();
 
   late AppRouter _appRouter;
@@ -147,8 +145,8 @@ class _AppState extends State<App> {
           _appRouter.parseRoute(uri);
         }
       }, onError: (error) => error.printError());
-    } on PlatformException {
-      Logger().e('Platfrom exception unilink');
+    } catch (e) {
+      Logger().e(e);
     }
   }
 }

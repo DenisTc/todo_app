@@ -8,4 +8,6 @@ class HiveDB {
     Hive.registerAdapter(TaskModelAdapter());
     await Hive.openBox<TaskModel>(BoxNames.tasks);
   }
+
+  Box<TaskModel> getBoxTasks() => Hive.box<TaskModel>(BoxNames.tasks);
 }
