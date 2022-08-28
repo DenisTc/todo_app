@@ -96,133 +96,146 @@ class _ListTasksState extends State<ListTasks> {
                                 color: customColors.white,
                               ),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 19,
-                                top: 15,
-                                right: 18,
-                                bottom: 15,
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
+                            child: Hero(
+                              tag: task.id,
+                              child: Material(
+                                color: Theme.of(context).cardTheme.color,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 19,
+                                    top: 15,
+                                    right: 18,
+                                    bottom: 15,
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 3,
-                                          right: 15,
-                                        ),
-                                        child: SizedBox(
-                                          height: 18,
-                                          width: 18,
-                                          child: ColoredBox(
-                                            color: isImportant && !task.done
-                                                ? Theme.of(context)
-                                                    .primaryColor
-                                                    .withOpacity(.16)
-                                                : Colors.transparent,
-                                            child: Checkbox(
-                                              value: task.done,
-                                              activeColor: customColors.green,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(2.0),
-                                              ),
-                                              side: MaterialStateBorderSide
-                                                  .resolveWith(
-                                                (states) => BorderSide(
-                                                  width: 2.0,
-                                                  color: _getBorderColor(
-                                                    status: task.done,
-                                                    isImportant: isImportant,
+                                      Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 3,
+                                              right: 15,
+                                            ),
+                                            child: SizedBox(
+                                              height: 18,
+                                              width: 18,
+                                              child: ColoredBox(
+                                                color: isImportant && !task.done
+                                                    ? Theme.of(context)
+                                                        .primaryColor
+                                                        .withOpacity(.16)
+                                                    : Colors.transparent,
+                                                child: Checkbox(
+                                                  value: task.done,
+                                                  activeColor:
+                                                      customColors.green,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            2.0),
                                                   ),
+                                                  side: MaterialStateBorderSide
+                                                      .resolveWith(
+                                                    (states) => BorderSide(
+                                                      width: 2.0,
+                                                      color: _getBorderColor(
+                                                        status: task.done,
+                                                        isImportant:
+                                                            isImportant,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  onChanged: (_) => taskCubit
+                                                      .completeTask(task),
                                                 ),
                                               ),
-                                              onChanged: (_) =>
-                                                  taskCubit.completeTask(task),
                                             ),
+                                          ),
+                                        ],
+                                      ),
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () =>
+                                              navController.goToTask(task),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Visibility(
+                                                    visible: task.importance !=
+                                                        ImportanceTypeEnum
+                                                            .basic.name,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                        top: 4,
+                                                        right: 6,
+                                                      ),
+                                                      child: _getImportanceIcon(
+                                                          task.importance),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      task.text,
+                                                      maxLines: 3,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: task.done
+                                                          ? Theme.of(context)
+                                                              .textTheme
+                                                              .bodyText2!
+                                                              .copyWith(
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .lineThrough)
+                                                          : Theme.of(context)
+                                                              .textTheme
+                                                              .bodyText1!,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      left: 14,
+                                                      top: 4,
+                                                    ),
+                                                    child: SvgPicture.asset(
+                                                      AppIcons.infoOutline,
+                                                      color: Theme.of(context)
+                                                          .iconTheme
+                                                          .color,
+                                                      width: 20,
+                                                      height: 20,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              if (deadline != null)
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 4),
+                                                  child: Text(
+                                                    deadline,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .subtitle1,
+                                                  ),
+                                                ),
+                                            ],
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap: () => navController.goToTask(task),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Visibility(
-                                                visible: task.importance !=
-                                                    ImportanceTypeEnum
-                                                        .basic.name,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    top: 4,
-                                                    right: 6,
-                                                  ),
-                                                  child: _getImportanceIcon(
-                                                      task.importance),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Text(
-                                                  task.text,
-                                                  maxLines: 3,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: task.done
-                                                      ? Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText2!
-                                                          .copyWith(
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .lineThrough)
-                                                      : Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1!,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  left: 14,
-                                                  top: 4,
-                                                ),
-                                                child: SvgPicture.asset(
-                                                  AppIcons.infoOutline,
-                                                  color: Theme.of(context)
-                                                      .iconTheme
-                                                      .color,
-                                                  width: 20,
-                                                  height: 20,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          if (deadline != null)
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.only(top: 4),
-                                              child: Text(
-                                                deadline,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .subtitle1,
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                           );

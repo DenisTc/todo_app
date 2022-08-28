@@ -76,11 +76,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 child: TextButton(
                   onPressed: () {
                     final task = TaskCubitModel(
-                        id: widget.task?.id,
-                        text: _textController.text,
-                        importance: dropdownValue.name,
-                        deadline: selectedDate?.millisecondsSinceEpoch,
-                        createdAt: widget.task?.createdAt);
+                      id: widget.task?.id,
+                      text: _textController.text,
+                      importance: dropdownValue.name,
+                      deadline: selectedDate?.millisecondsSinceEpoch,
+                      createdAt: widget.task?.createdAt,
+                      done: widget.task?.done ?? false,
+                    );
 
                     if (isEditMode) {
                       context.read<TaskCubit>().updateTask(task);
@@ -104,9 +106,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _TextFormField(
-                      textController: _textController,
-                      appLocalizations: appLocalizations,
+                    Hero(
+                      tag: widget.task?.id ?? '',
+                      child: _TextFormField(
+                        textController: _textController,
+                        appLocalizations: appLocalizations,
+                      ),
                     ),
                     DropdownImportanceLevel(
                       appLocalizations: appLocalizations,

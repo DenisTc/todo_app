@@ -41,6 +41,9 @@ class AppRouter extends RouterDelegate
 
     return Navigator(
       key: navigatorKey,
+      observers: [
+        HeroController(),
+      ],
       onPopPage: _handlePopPage,
       pages: pages,
     );
