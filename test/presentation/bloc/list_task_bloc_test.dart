@@ -34,6 +34,7 @@ void main() async {
       importance: 'hight',
       createdAt: DateTime(2021).millisecondsSinceEpoch + 3,
       changedAt: DateTime(2022).millisecondsSinceEpoch + 3,
+      done: true,
       lastUpdatedBy: 'deviceId3',
     ),
   ];
@@ -55,7 +56,7 @@ void main() async {
     act: (cubit) => cubit.loadListTask(),
     expect: () => <ListTaskState>[
       const ListTaskState.loading(),
-      ListTaskState.loaded(listTask: tasks, countCompletedTask: 0),
+      ListTaskState.loaded(listTask: tasks, countCompletedTask: 1),
     ],
     verify: (_) async {
       verify(() => mockTaskRepository.getAllTasks()).called(1);
