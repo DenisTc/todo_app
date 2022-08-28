@@ -1,3 +1,4 @@
+import 'package:todo_app/src/core/enums/status_enum.dart';
 import 'package:todo_app/src/data/datasource/local/local_datasource_impl.dart';
 import 'package:todo_app/src/data/datasource/local/models/task_model.dart';
 import 'package:todo_app/src/data/datasource/remote/remote_datasource_impl.dart';
@@ -20,7 +21,7 @@ class AppRepositoryImpl extends AppRepository {
 
     final result = await _remoteDatasource.getAllTasks();
 
-    if (result.status == 'ok') {
+    if (result.status == StatusEnum.ok.name) {
       // Если на бэке более актуальная ривизия которой у нас нет, то
       // удаляем локальные данные и записываем актуальные с бэка
       if (revision != result.revision) {
@@ -54,7 +55,7 @@ class AppRepositoryImpl extends AppRepository {
         revision: revision,
       );
 
-      if (result.status == 'ok') {
+      if (result.status == StatusEnum.ok.name) {
         _localDatasource.saveRevision(result.revision!);
       } else {
         _localDatasource.saveOfflineDataStatus(true);
@@ -75,7 +76,7 @@ class AppRepositoryImpl extends AppRepository {
         revision: revision,
       );
 
-      if (result.status == 'ok') {
+      if (result.status == StatusEnum.ok.name) {
         _localDatasource.saveRevision(result.revision!);
       } else {
         _localDatasource.saveOfflineDataStatus(true);
@@ -96,7 +97,7 @@ class AppRepositoryImpl extends AppRepository {
         revision: revision,
       );
 
-      if (result.status == 'ok') {
+      if (result.status == StatusEnum.ok.name) {
         _localDatasource.saveRevision(result.revision!);
       } else {
         _localDatasource.saveOfflineDataStatus(true);
@@ -114,7 +115,7 @@ class AppRepositoryImpl extends AppRepository {
       revision: revision,
     );
 
-    if (result.status == 'ok') {
+    if (result.status == StatusEnum.ok.name) {
       await _localDatasource.deleteAllTasks();
 
       _localDatasource.addTasks(result.list!);

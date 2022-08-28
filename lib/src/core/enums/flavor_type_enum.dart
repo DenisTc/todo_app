@@ -1,5 +1,1 @@
-enum FlavorTypeEnum {
-  dev,
-  staging,
-  prod,
-}
+enum FlavorTypeEnum { dev, prod }

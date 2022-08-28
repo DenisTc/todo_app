@@ -1,0 +1,1 @@
+enum StatusEnum { error, ok }

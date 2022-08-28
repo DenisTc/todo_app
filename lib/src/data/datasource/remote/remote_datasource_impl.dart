@@ -1,3 +1,4 @@
+import 'package:todo_app/src/core/enums/status_enum.dart';
 import 'package:todo_app/src/data/api/api.dart';
 import 'package:todo_app/src/data/api/api_routes.dart';
 import 'package:todo_app/src/data/datasource/remote/remote_datasource.dart';
@@ -19,7 +20,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
       AnalyticsService().setLogEvent('get_all_tasks');
       return AllTasksResponseEntity.fromJson(response.data);
     } catch (e) {
-      return const AllTasksResponseEntity(status: 'error');
+      return AllTasksResponseEntity(status: StatusEnum.error.name);
     }
   }
 
@@ -28,7 +29,10 @@ class RemoteDatasourceImpl implements RemoteDatasource {
     required TaskModel task,
     required int revision,
   }) async {
-    final data = {'status': 'ok', 'element': task.toJson()};
+    final data = {
+      'status': StatusEnum.ok.name,
+      'element': task.toJson(),
+    };
     final options = Options(headers: {'X-Last-Known-Revision': revision});
 
     try {
@@ -41,7 +45,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
       AnalyticsService().setLogEvent('add_task');
       return TaskResponseEntity.fromJson(response.data);
     } catch (e) {
-      return const TaskResponseEntity(status: 'error');
+      return TaskResponseEntity(status: StatusEnum.error.name);
     }
   }
 
@@ -59,7 +63,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
       AnalyticsService().setLogEvent('delete_task');
       return TaskResponseEntity.fromJson(response.data);
     } catch (e) {
-      return const TaskResponseEntity(status: 'error');
+      return TaskResponseEntity(status: StatusEnum.error.name);
     }
   }
 
@@ -68,7 +72,10 @@ class RemoteDatasourceImpl implements RemoteDatasource {
     required TaskModel task,
     required int revision,
   }) async {
-    final data = {'status': 'ok', 'element': task.toJson()};
+    final data = {
+      'status': StatusEnum.ok.name,
+      'element': task.toJson(),
+    };
     final options = Options(headers: {'X-Last-Known-Revision': revision});
 
     try {
@@ -81,7 +88,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
       AnalyticsService().setLogEvent('update_task');
       return TaskResponseEntity.fromJson(response.data);
     } catch (e) {
-      return const TaskResponseEntity(status: 'error');
+      return TaskResponseEntity(status: StatusEnum.error.name);
     }
   }
 
@@ -91,7 +98,10 @@ class RemoteDatasourceImpl implements RemoteDatasource {
     required int revision,
   }) async {
     final tasksJson = tasks.map((task) => task.toJson()).toList();
-    final data = {'status': 'ok', 'list': tasksJson};
+    final data = {
+      'status': StatusEnum.ok.name,
+      'list': tasksJson,
+    };
     final options = Options(headers: {'X-Last-Known-Revision': revision});
 
     try {
@@ -104,7 +114,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
       AnalyticsService().setLogEvent('update_all_tasks');
       return AllTasksResponseEntity.fromJson(response.data);
     } catch (e) {
-      return const AllTasksResponseEntity(status: 'error');
+      return AllTasksResponseEntity(status: StatusEnum.error.name);
     }
   }
 }
