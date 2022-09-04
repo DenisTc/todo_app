@@ -19,8 +19,8 @@ abstract class AppColors {
   static const backElevatedLight = Color(0xFFFFFFFF);
 
   // Цвета для тёмной темы [Dark]
-  static const supportSeparatorDark = Color(0x33000000);
-  static const supportOverlayDark = Color(0x0F000000);
+  static const supportSeparatorDark = Color(0x33FFFFFF);
+  static const supportOverlayDark = Color(0x52000000);
   static const labelPrimaryDark = Color(0xFFFFFFFF);
   static const labelSecondaryDark = Color(0x99FFFFFF);
   static const labelTertiaryDark = Color(0x66FFFFFF);

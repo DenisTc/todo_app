@@ -1,4 +1,6 @@
 import 'package:todo_app/src/imports.dart';
+import 'package:todo_app/src/presentation/cubit/task/model/task_cubit_model.dart';
+import 'package:todo_app/src/presentation/cubit/task/task_cubit.dart';
 import 'package:todo_app/src/presentation/screens/add_edit_task_screen/widgets/deadline_data_picker.dart';
 import 'package:todo_app/src/presentation/screens/add_edit_task_screen/widgets/dropdown_importance_level.dart';
 
@@ -31,20 +33,22 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     dropdownValue = ImportanceTypeEnum.values.firstWhere(
       (element) => element.name == widget.task?.importance,
       orElse: () => ImportanceTypeEnum.basic,
     );
 
-    selectedDate = widget.task?.deadline != null
-        ? DateTime.fromMillisecondsSinceEpoch(widget.task!.deadline!)
-        : null;
+    if (widget.task != null && widget.task!.deadline != null) {
+      selectedDate =
+          DateTime.fromMillisecondsSinceEpoch(widget.task!.deadline!);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final isEditMode = widget.task != null;
-    final appLocalizations = AppLocalizations.of(context)!;
+    final appLocalizations = AppLocalizations.of(context);
 
     return Scaffold(
       body: CustomScrollView(
@@ -55,41 +59,38 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             elevation: Theme.of(context).appBarTheme.elevation,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             leading: GestureDetector(
-              onTap: () => context.read<NavigationController>().pop(),
-              child: SvgPicture.asset(
-                AppIcons.close,
-                height: 15,
-                width: 15,
-                fit: BoxFit.scaleDown,
+              onTap: () => Navigator.of(context).pop(),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SvgPicture.asset(
+                  AppIcons.close,
+                  color: Theme.of(context).textTheme.headline1!.color,
+                  height: 15,
+                  width: 15,
+                  fit: BoxFit.scaleDown,
+                ),
               ),
             ),
             actions: [
               Visibility(
                 child: TextButton(
-                  onPressed: () async {
-                    final id = widget.task?.id ?? const Uuid().v4();
-                    final createdAt = widget.task?.createdAt ??
-                        DateTime.now().millisecondsSinceEpoch;
-                    final deviceId = await PlatformDeviceId.getDeviceId;
-
-                    final task = TaskModel(
-                      id: id,
+                  onPressed: () {
+                    final task = TaskCubitModel(
+                      id: widget.task?.id,
                       text: _textController.text,
                       importance: dropdownValue.name,
                       deadline: selectedDate?.millisecondsSinceEpoch,
-                      createdAt: createdAt,
-                      changedAt: DateTime.now().millisecondsSinceEpoch,
-                      lastUpdatedBy: deviceId!,
+                      createdAt: widget.task?.createdAt,
+                      done: widget.task?.done ?? false,
                     );
 
-                    if (!mounted) return;
                     if (isEditMode) {
-                      context.read<TaskBloc>().add(TaskEvent.updateTask(task));
+                      context.read<TaskCubit>().updateTask(task);
                     } else {
-                      context.read<TaskBloc>().add(TaskEvent.addTask(task));
+                      context.read<TaskCubit>().addTask(task);
                     }
 
-                    context.read<NavigationController>().pop();
+                    Navigator.of(context).pop();
                   },
                   child: Text(
                     appLocalizations.save,
@@ -105,9 +106,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _TextFormField(
-                      textController: _textController,
-                      appLocalizations: appLocalizations,
+                    Hero(
+                      tag: widget.task?.id ?? '',
+                      child: _TextFormField(
+                        textController: _textController,
+                        appLocalizations: appLocalizations,
+                      ),
                     ),
                     DropdownImportanceLevel(
                       appLocalizations: appLocalizations,
@@ -207,9 +211,8 @@ class _DeleteTaskButton extends StatelessWidget {
       onTap: !isEditMode
           ? null
           : () {
-              context.read<TaskBloc>().add(TaskEvent.deleteTask(widget.task!));
-
-              context.read<NavigationController>().pop();
+              context.read<TaskCubit>().deleteTask(widget.task!);
+              Navigator.of(context).pop();
             },
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -224,7 +227,7 @@ class _DeleteTaskButton extends StatelessWidget {
             const SizedBox(width: 12),
             Text(
               appLocalizations.delete,
-              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+              style: Theme.of(context).textTheme.subtitle1?.copyWith(
                     color: !isEditMode
                         ? Theme.of(context).disabledColor
                         : Theme.of(context).errorColor,

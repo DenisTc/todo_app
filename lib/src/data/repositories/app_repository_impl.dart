@@ -1,3 +1,4 @@
+import 'package:todo_app/src/core/enums/status_enum.dart';
 import 'package:todo_app/src/data/datasource/local/local_datasource_impl.dart';
 import 'package:todo_app/src/data/datasource/local/models/task_model.dart';
 import 'package:todo_app/src/data/datasource/remote/remote_datasource_impl.dart';
@@ -14,13 +15,13 @@ class AppRepositoryImpl extends AppRepository {
         _remoteDatasource = remoteDatasource;
 
   @override
-  Future<void> getAllTasks() async {
+  Future<List<TaskModel>> getAllTasks() async {
     final revision = await _localDatasource.getRevision();
     final hasOfflineData = await _localDatasource.getOfflineDataStatus();
 
     final result = await _remoteDatasource.getAllTasks();
 
-    if (result.status == 'ok') {
+    if (result.status == StatusEnum.ok.name) {
       // Если на бэке более актуальная ривизия которой у нас нет, то
       // удаляем локальные данные и записываем актуальные с бэка
       if (revision != result.revision) {
@@ -28,6 +29,7 @@ class AppRepositoryImpl extends AppRepository {
 
         _localDatasource.addTasks(result.list!);
         _localDatasource.saveRevision(result.revision!);
+        return result.list!;
       }
 
       // Если ревизии равны, но на устройстве есть новые локальные данные, то
@@ -36,6 +38,8 @@ class AppRepositoryImpl extends AppRepository {
         updateAllTasks();
       }
     }
+
+    return _localDatasource.getAllTasks();
   }
 
   @override
@@ -51,7 +55,7 @@ class AppRepositoryImpl extends AppRepository {
         revision: revision,
       );
 
-      if (result.status == 'ok') {
+      if (result.status == StatusEnum.ok.name) {
         _localDatasource.saveRevision(result.revision!);
       } else {
         _localDatasource.saveOfflineDataStatus(true);
@@ -72,7 +76,7 @@ class AppRepositoryImpl extends AppRepository {
         revision: revision,
       );
 
-      if (result.status == 'ok') {
+      if (result.status == StatusEnum.ok.name) {
         _localDatasource.saveRevision(result.revision!);
       } else {
         _localDatasource.saveOfflineDataStatus(true);
@@ -93,7 +97,7 @@ class AppRepositoryImpl extends AppRepository {
         revision: revision,
       );
 
-      if (result.status == 'ok') {
+      if (result.status == StatusEnum.ok.name) {
         _localDatasource.saveRevision(result.revision!);
       } else {
         _localDatasource.saveOfflineDataStatus(true);
@@ -111,7 +115,7 @@ class AppRepositoryImpl extends AppRepository {
       revision: revision,
     );
 
-    if (result.status == 'ok') {
+    if (result.status == StatusEnum.ok.name) {
       await _localDatasource.deleteAllTasks();
 
       _localDatasource.addTasks(result.list!);
